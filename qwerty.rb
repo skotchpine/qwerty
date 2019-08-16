@@ -81,6 +81,11 @@ def key_rows
   end
 end
 
+def lesson_keys
+  # 'jjkjj jkjkk kjkkj kkjkk kkjjk jkjjk kjkjj'.split('')
+  'One Lone Ranger shot arrows around the moon'.split('')
+end
+
 get '/' do
-  haml :index, locals: { key_rows: key_rows }
+  haml :index, locals: { key_rows: key_rows, lesson_keys: lesson_keys }
 end

@@ -9,7 +9,15 @@
   %body
     #container
       %h1 Home row # 1
-      #write jkjjk kjkkj jkjkj kjkjk jjkkjk jkjjk kkjkk jkkjj
+      
+      #stats
+        #accuracy
+        #wpm
+
+      #write
+        - lesson_keys.each_with_index do |key, i|
+          %span.lessonKey{key: key, i: i}= key
+
       #keyboard.raised
         - key_rows.each do |key_row|
           - key_row.each.with_index(1) do |key, i|
