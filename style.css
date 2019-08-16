@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font: 71%/1.5 Verdana, Sans-Serif;
+    background: #55c5ff;
+}
+
+#container {
+    margin: 40px auto;
+    width: 90%;
+    max-width: 1000px;
+    text-align: center;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 3em;
+    margin-bottom: 2em;
+}
+
+#write {
+    margin: 0 0 50px;
+    padding: 0.5em;
+    width: 90%;
+    max-width: 945px;
+    height: 1.5em;
+    font: 1em/1.5 Verdana, Sans-Serif;
+    font-size: 2em;
+    text-align: center;
+    display: inline-block;
+    background: white;
+    /* border: 1px solid gray; */
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#keyboard {
+    margin: 0;
+    padding: 10px;
+    height: 220px;
+    width: 645px;
+    display: inline-block;
+    background-color: #52b3e4;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.key {
+    float: left;
+    margin: 0 4px 4px 0;
+    width: 40px;
+    height: 37px;
+    line-height: 40px;
+    text-align: center;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.raised {
+    border-top: 1px solid rgb(214, 233, 255);
+    border-bottom: 1px solid rgb(95, 112, 133);
+    border-right: 0px;
+    border-left: 0px;
+}
+
+.key[key=caps],
+.key[key=tab],
+.key[key=shift_l] {
+    clear: left;
+}
+
+.key[key=tab],
+.key[key=backspace] {
+    width: 68px;
+}
+
+.key[key=caps] {
+    width: 78px;
+}
+
+.key[key=enter] {
+    width: 75px;
+}
+
+.key[key=shift_l] {
+    width: 93px;
+}
+
+.key[key=shift_r] {
+    width: 107px;
+}
+
+.last {
+    margin-right: 0;
+}
+
+.key[key=space] {
+    margin-left: 140px;
+    width: 350px;
+}
+
+.off {
+    display: none;
+}
+
+.down {
+    border-color: rgb(79, 91, 105);
+}
+
+.key[finger="1"] {
+    background-color: rgb(160, 216, 235);
+}
+
+.key[finger="2"] {
+    background-color: rgb(144, 238, 210);
+}
+
+.key[finger="3"] {
+    background-color: rgb(129, 195, 162);
+}
+
+.key[finger="4"] {
+    background-color: rgb(181, 214, 129);
+}
+
+.key[finger="5"] {
+    background-color: rgb(189, 139, 92);
+}
+
+.key[finger="6"] {
+    background-color: rgb(200, 146, 146);
+}
+
+.key[finger="7"] {
+    background-color: rgb(188, 154, 204);
+}
+
+.key[finger="8"] {
+    background-color: rgb(143, 166, 231);
+}
+
+.key[finger="0"] {
+    background-color: #bbb;
+}

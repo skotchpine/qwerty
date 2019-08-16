@@ -1,0 +1,21 @@
+!!!
+%html{lang: :en}
+  %head
+    %meta{charset: 'UTF-8'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
+    %meta{'http-equiv': 'X-UA-Compatible', content: 'ie=edge'}
+    %link{rel: 'stylesheet', type: 'text/css', href: '/style.css'}
+    %title qwerty
+  %body
+    #container
+      %h1 Home row # 1
+      #write jkjjk kjkkj jkjkj kjkjk jjkkjk jkjjk kkjkk jkkjj
+      #keyboard.raised
+        - key_rows.each do |key_row|
+          - key_row.each.with_index(1) do |key, i|
+            %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
+              %span.on= key.on
+              %span.off= key.off
+
+    %script{type: 'text/javascript', src: '/jquery.js'}
+    %script{type: 'text/javascript', src: '/script.js'}
