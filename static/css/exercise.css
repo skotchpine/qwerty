@@ -1,6 +1,6 @@
 #container {
     margin: 40px auto;
-    width: 90%;
+    width: 100%;
     max-width: 1000px;
     text-align: center;
 }
@@ -14,7 +14,7 @@ h1 {
     margin: 0 0 40px;
     padding: .5em;
     width: 90%;
-    max-width: 945px;
+    max-width: 900px;
     height: 70px;
     font: 1em/1.5 Verdana, Sans-Serif;
     font-size: 2em;

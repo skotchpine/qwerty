@@ -3,8 +3,10 @@ before '/app/*' do
 end
 
 get '/app/sign_out' do
+  puts session
   session.clear
-  haml :sign_in
+  puts session
+  redirect :sign_in, 301
 end
 
 get '/app/home' do
@@ -16,7 +18,7 @@ end
 get '/app/lessons/:lesson_id/exercises/:exercise_id' do
   lesson = Lesson.where(id: params[:lesson_id].to_i).first
   exercise = Exercise.where(id: params[:exercise_id].to_i).first
-  haml :lesson, locals: { key_rows: Keyboard.rows, exercise: exercise, lesson: lesson }
+  haml :exercise, locals: { key_rows: Keyboard.rows, exercise: exercise, lesson: lesson }
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do

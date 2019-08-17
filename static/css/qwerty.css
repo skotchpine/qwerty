@@ -5,6 +5,7 @@
 
 body {
     background: #55c5ff;
+    min-width: 780px;
 }
 
 .pointer {
