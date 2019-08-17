@@ -21,11 +21,11 @@ h1 {
 }
 
 #write {
-    margin: 0 0 50px;
+    margin: 0 0 40px;
     padding: 0.5em;
     width: 90%;
     max-width: 945px;
-    height: 1.5em;
+    height: 60px;
     font: 1em/1.5 Verdana, Sans-Serif;
     font-size: 2em;
     text-align: center;
@@ -62,7 +62,7 @@ h1 {
     margin: 0;
     padding: 10px;
     height: 220px;
-    width: 642px;
+    width: 662px;
     display: inline-block;
     background-color: #52b3e4;
     -moz-border-radius: 5px;
@@ -70,19 +70,11 @@ h1 {
 }
 
 #wpm {
-    margin: 2em;
-    font-size: 3em;
-    color: gold;
-    text-shadow: #bbb;
-    display: inline-block;
+    font-size: 2em;
 }
 
-#accuracy {
-    margin: 2em;
-    font-size: 3em;
-    color: gold;
-    text-shadow: #bbb;
-    display: inline-block;
+#typos {
+    font-size: 2em;
 }
 
 .key {

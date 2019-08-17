@@ -4,15 +4,30 @@
     %meta{charset: 'UTF-8'}
     %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
     %meta{'http-equiv': 'X-UA-Compatible', content: 'ie=edge'}
+    %link{rel: 'stylesheet', type: 'text/css', href: '/bootstrap.css'}
     %link{rel: 'stylesheet', type: 'text/css', href: '/style.css'}
     %title qwerty
   %body
     #container
       %h1 Home row # 1
       
-      #stats
-        #accuracy
-        #wpm
+      #controls.row.text-center.mb-4.mt-4
+        .col
+        .col
+        #typos.col
+          .badge.badge-success
+            %span.figure 0
+            typos
+        #wpm.col
+          .badge.badge-success
+            %span.figure 0
+            wpm
+        #restart.col
+          %a.btn.btn-primary{href: '.'} restart
+        #home.col
+          %a.btn.btn-secondary{href: '/home'} home
+        .col
+        .col
 
       #write
         - lesson_keys.each_with_index do |key, i|
@@ -26,4 +41,5 @@
               %span.off= key.off
 
     %script{type: 'text/javascript', src: '/jquery.js'}
+    %script{type: 'text/javascript', src: '/bootstrap.js'}
     %script{type: 'text/javascript', src: '/script.js'}

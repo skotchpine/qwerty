@@ -89,3 +89,11 @@ end
 get '/' do
   haml :index, locals: { key_rows: key_rows, lesson_keys: lesson_keys }
 end
+
+post '/' do
+  { right: params[:right], wrong: params[:wrong], accuracy: params[:accuracy], wpm: params[:wpm] }.to_json
+end
+
+get '/summary' do
+  haml :summary, locals: { right: 20, wrong: 5, accuracy: '80%', wpm: 35}
+end

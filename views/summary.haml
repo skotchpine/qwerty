@@ -1,0 +1,38 @@
+!!!
+%html{lang: :en}
+  %head
+    %meta{charset: 'UTF-8'}
+    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
+    %meta{'http-equiv': 'X-UA-Compatible', content: 'ie=edge'}
+    %link{rel: 'stylesheet', type: 'text/css', href: '/bootstrap.css'}
+    %link{rel: 'stylesheet', type: 'text/css', href: '/style.css'}
+    %title qwerty
+  %body
+    .container
+      .card.mt-5
+        .card-body.text-center
+          %h2.card-title Home row # 1
+          %hr
+          .row
+            .col
+              %h2= wrong
+              %h4 typos
+            .col
+              %h2= accuracy
+              %h4 accuracy
+            .col
+              %h2= wpm
+              %h4 wpm
+          %hr
+          .row
+            .col
+            #restart.col
+              %a.btn.btn-warning{href: '/'} restart
+            #home.col
+              %a.btn.btn-secondary{href: '/home'} home
+            #next.col
+              %a.btn.btn-success{href: '/next'} next
+            .col
+
+    %script{type: 'text/javascript', src: '/jquery.js'}
+    %script{type: 'text/javascript', src: '/bootstrap.js'}

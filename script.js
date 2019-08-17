@@ -1,5 +1,5 @@
 $(function() {
-    keyEl = function(event) {
+    const keyEl = function(event) {
         var code = event.keyCode
         if (event.code == "ShiftLeft")
             code = '16a'
@@ -13,13 +13,32 @@ $(function() {
     var k = $('span[i="' + i + '"]');
     var x = k.html();
 
-    var right = 0;
-    var wrong = 0;
+    var missed = 0;
     var start;
+    var accuracy;
+    var wpm;
+
+    const updateView = function() {
+        if (!start) return;
+
+        accuracy = (Math.round(i / (i + missed) * 1000) / 10) + '%';
+
+        const now = new Date();
+        const elapsed = (now - start) / 60000;
+        wpm = Math.round((i / 5) / elapsed * 10) / 10;
+        $('#wpm .figure').html(wpm);
+    }
+
+    const updateViewInterval = setInterval(updateView, 1000);
 
     var caps = false;
 
     $(window).keydown(function(event) {
+        if (event.keyCode == 27) {
+            reset();
+            return;
+        }
+
         if (!start) start = new Date();
 
         if (event.keyCode == 16 && !caps) {
@@ -46,27 +65,32 @@ $(function() {
                 k.addClass('done');
                 k.removeClass('missed');
 
-                right++;
-
                 i++;
-                if (i >= n) {
-                    alert('done!');
-                } else {
+
+                if (i < n) {
                     k = $('span[i="' + i + '"]');
                     x = k.html();
+                } else {
+                    updateView();
+                    clearInterval(updateViewInterval);
+                    $.post('', {
+                        wpm: wpm,
+                        right: i,
+                        wrong: missed,
+                        accuracy: accuracy,
+                    }).done(function(data, status, xhr) {
+                        window.location = '/summary';
+                    }).fail(function(data, status, xhr) {
+                        alert('something bad happened!');
+                    });
                 }
             } else if (key != 16 && key != 20) {
                 k.addClass('missed');
-                wrong++;
+
+                missed++;
             }
 
-            const accuracy = Math.round(right / (right + wrong) * 100) + '%';
-            $('#accuracy').html(accuracy);
-
-            const now = new Date();
-            const elapsed = (now - start) / 60000;
-            const wpm = Math.round((i / 5) / elapsed);
-            $('#wpm').html(wpm);
+            $('#typos .figure').html(missed);
         }
     });
     $(window).keyup(function(event) {
