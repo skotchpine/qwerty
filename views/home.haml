@@ -1,5 +1,5 @@
 .container
-	.row.mt-5
+	.row.mt-5.mb-5
 		.col-sm-12.col-md-10.offset-md-1.col-lg-8.offset-lg-2
 			.card
 				.card-body
@@ -22,22 +22,25 @@
 										.col-5
 											.row
 												.col
-													%i.fas.fa-check.h4
+													%i.fas.fa-check.h4{class: (rand > 0.5 ? :complete : :incomplete)}
 												.col
-													%i.fas.fa-bullseye.h4
+													%i.fas.fa-bullseye.h4{class: (rand > 0.5 ? :complete : :incomplete)}
 												.col
-													%i.fas.fa-bolt.h4
+													%i.fas.fa-bolt.h4{class: (rand > 0.5 ? :complete : :incomplete)}
 
 										.col-2.text-right
 											%i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{exercises_id}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
 
-								.card-body.collapse{id: exercises_id, 'aria-lebelledby': lesson_id, 'data-parent': '#lessons'}
-									%div exercise 1
-									%div exercise 2
-									%div exercise 3
-									%div exercise 4
-									%div exercise 5
-									%div exercise 6
-									%div exercise 7
-									%div exercise 8
-									%div exercise 9
+								.card-body.collapse{class: (:show if i.zero?), id: exercises_id, 'aria-lebelledby': lesson_id, 'data-parent': '#lessons'}
+									.row
+										- lesson.exercises.each_with_index do |exercise, j|
+											.col-sm-4.col-md-3
+												%a.btn.btn-secondary{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
+													%h5 Exercise #{j+1}
+													.row
+														.col
+															%i.fas.fa-check{class: (rand > 0.5 ? :complete : :incomplete)}
+														.col
+															%i.fas.fa-bullseye{class: (rand > 0.5 ? :complete : :incomplete)}
+														.col
+															%i.fas.fa-bolt{class: (rand > 0.5 ? :complete : :incomplete)}

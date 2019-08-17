@@ -75,13 +75,13 @@ $(function() {
                 } else {
                     updateView();
                     clearInterval(updateViewInterval);
-                    $.post('', {
+                    $.post(window.location.href, {
                         wpm: wpm,
                         right: i,
                         wrong: missed,
                         accuracy: accuracy,
                     }).done(function(data, status, xhr) {
-                        window.location = '/summary';
+                        window.location = '/app/submissions/' + JSON.parse(data)['id'];
                     }).fail(function(data, status, xhr) {
                         alert('something bad happened!');
                     });

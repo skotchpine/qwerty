@@ -1,45 +1,40 @@
-!!!
-%html{lang: :en}
-  %head
-    %meta{charset: 'UTF-8'}
-    %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
-    %meta{'http-equiv': 'X-UA-Compatible', content: 'ie=edge'}
-    %link{rel: 'stylesheet', type: 'text/css', href: '/bootstrap.css'}
-    %link{rel: 'stylesheet', type: 'text/css', href: '/keyboard.css'}
-    %title qwerty
-  %body
-    #container
-      %h1 Home row # 1
-      
-      #controls.row.text-center.mb-4.mt-4
-        .col
-        .col
-        #typos.col
-          -# .badge.badge-success
-          %span.figure 0
-          typos
-        #wpm.col
-          -# .badge.badge-success
-          %span.figure 0
-          wpm
-        .col
-          %a.btn.btn-link#restart{href: '/'} restart
-        .col
-          %a.btn.btn-link#home{href: '/home'} home
-        .col
-        .col
+- content_for :head do
+  %link{rel: 'stylesheet', type: 'text/css', href: '/lesson.css'}
 
-      #write
-        - lesson_keys.each_with_index do |key, i|
-          %span.lessonKey{key: key, i: i}= key
+- content_for :foot do
+  %script{type: 'text/javascript', src: '/lesson.js'}
 
-      #keyboard.raised
-        - key_rows.each do |key_row|
-          - key_row.each.with_index(1) do |key, i|
-            %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
-              %span.on= key.on
-              %span.off= key.off
 
-    %script{type: 'text/javascript', src: '/jquery.js'}
-    %script{type: 'text/javascript', src: '/bootstrap.js'}
-    %script{type: 'text/javascript', src: '/keyboard.js'}
+#container
+  %h5 Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
+  
+  #controls.row.text-center.mb-4.mt-4
+    .col
+    .col
+    #typos.col
+      %span.figure 0
+      typos
+    #wpm.col
+      %span.figure 0
+      wpm
+    .col
+      %a.btn.btn-link#restart{href: request.url}
+        %i.fas.fa-redo
+        restart
+    .col
+      %a.btn.btn-link#home{href: '/app/home'}
+        %i.fas.fa-home
+        home
+    .col
+    .col
+
+  #write
+    - exercise.content.split('').each_with_index do |key, i|
+      %span.lessonKey{key: key, i: i}= key
+
+  #keyboard.raised
+    - key_rows.each do |key_row|
+      - key_row.each.with_index(1) do |key, i|
+        %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
+          %span.on= key.on
+          %span.off= key.off

@@ -64,7 +64,7 @@ if not database.table_exists?(:exercises)
       foreign_key :lesson_id, :lessons, null: false
 
       Integer :position
-      String :exercise
+      String :content
     end
   end
 end
@@ -83,7 +83,6 @@ if not database.table_exists?(:submissions)
       Integer :wrong,    null: false
       Integer :accuracy, null: false
       Integer :wpm,      null: false
-      Integer :passed,   null: false
       
       timestamp :created_at
     end
@@ -102,10 +101,14 @@ class Lesson < Sequel::Model
   one_to_many :exercises
 end
 
+Lesson.dataset_module { order :position }
+
 class Exercise < Sequel::Model
   many_to_one :lesson
   one_to_many :submissions
 end
+
+Exercise.dataset_module { order :position }
 
 class Submission < Sequel::Model
   many_to_one :exercise
@@ -114,9 +117,9 @@ end
 
 if Lesson.all.none?
   {
-    'Home Row' => %w[
-      jjkjk jkjkk kjkkj jkjjj jkkkj jkjkj kjkkj kkjkj
-      ddfdf dfdff fdffd dfddd dfffd dfdfd fdffd ffdfd
+    'Home Row' => [
+      'jjkjk jkjkk kjkkj jkjjj jkkkj jkjkj kjkkj kkjkj',
+      'ddfdf dfdff fdffd dfddd dfffd dfdfd fdffd ffdfd',
     ],
     'Index Fingers' => %w[],
     'Pinkies' => %w[],
@@ -134,8 +137,8 @@ if Lesson.all.none?
   }
     .each_with_index do |(title, exercises), i|
       lesson = Lesson.create(title: title, position: i)
-      exercises.each_with_index do |exercise, j|
-        lesson.add_exercise(exercise: exercise, position: j)
+      exercises.each_with_index do |content, j|
+        lesson.add_exercise(content: content, position: j)
       end
     end
 end
@@ -164,7 +167,7 @@ def key_rows
       %w[0         )         48  8],
       %w[-         _         189 8],
       %w[=         +         187 8],
-      %w[backspace backspace 8   0],
+      %w[delete delete 8   0],
     ],
     [
       %w[tab  tab 9   0],
@@ -219,11 +222,6 @@ def key_rows
   end
 end
 
-def lesson_keys
-  'jjkjj jkjkk kjkkj kkjkk kkjjk jkjjk kjkjj'.split('')
-  # 'One Lone Ranger shot arrows around the moon'.split('')
-end
-
 template :layout do
   File.read(File.join(__dir__, 'views', 'layout.haml'))
 end
@@ -237,7 +235,7 @@ get '/' do
 end
 
 before '/auth/*' do
-  request.path_info = "/app/home" if session[:user_id]
+  redirect "/app/home", 301 if session[:user_id]
 end
 
 get '/auth/sign_up' do
@@ -288,15 +286,15 @@ post '/auth/sign_in' do
 
       redirect '/app/home', 301
     else
-      redirect "/auth/sign_in?error=Access denied.", 403
+      redirect "/auth/sign_in?error=Access denied.", 301
     end
   else
-    redirect "/auth/sign_in?error=That account doesn't exist.", 403
+    redirect "/auth/sign_in?error=That account doesn't exist.", 301
   end
 end
 
 before '/app/*' do
-  request.path_info = "/sign_in?error=You have to sign in first." unless session[:user_id]
+  redirect "/auth/sign_in", 301 unless session[:user_id]
 end
 
 get '/app/sign_out' do
@@ -305,18 +303,57 @@ get '/app/sign_out' do
 end
 
 get '/app/home' do
+  # redirect 'http://localhost:4567/app/lessons/1/exercises/1', 301
   lessons = Lesson.all
   haml :home, locals: { first_name: session[:first_name], lessons: lessons }
 end
 
-get '/app/lessons/:lesson_index/exercises/:exercise_index' do
-  haml :lesson, locals: { key_rows: key_rows, lesson_keys: lesson_keys }
+get '/app/lessons/:lesson_id/exercises/:exercise_id' do
+  lesson = Lesson.where(id: params[:lesson_id].to_i).first
+  exercise = Exercise.where(id: params[:exercise_id].to_i).first
+  haml :lesson, locals: { key_rows: key_rows, exercise: exercise, lesson: lesson }
 end
 
-post '/app/lessons/:lesson_index/exercises/:exercise_index' do
-  { right: params[:right], wrong: params[:wrong], accuracy: params[:accuracy], wpm: params[:wpm] }.to_json
+post '/app/lessons/:lesson_id/exercises/:exercise_id' do
+  submission =
+    Submission.create \
+      user_id: session[:user_id].to_i,
+      exercise_id: params[:exercise_id].to_i,
+      right: params[:right],
+      wrong: params[:wrong],
+      accuracy: params[:accuracy],
+      wpm: params[:wpm],
+      created_at: DateTime.now
+  { id: submission.id }.to_json
 end
 
-get '/app/lessons/:lesson_index/exercises/:exercise_index/summary' do
-  haml :summary, locals: { right: 20, wrong: 5, accuracy: '80%', wpm: 35}
+get '/app/submissions/:submission_id' do
+  submission = Submission.where(id: params[:submission_id].to_i).first
+  exercise = submission.exercise
+  lesson = exercise.lesson
+
+  next_path =
+    if lesson.exercises.last == exercise
+      next_lesson = Lesson.where(position: lesson.position + 1).first
+
+      if next_lesson
+        "/app/lessons/#{next_lesson.id}/exercises/1"
+      else
+        "/app/home"
+      end
+    else
+      next_exercise = Exercise.where(lesson_id: lesson.id, position: exercise.position + 1).first
+
+      "/app/lessons/#{lesson.id}/exercises/#{next_exercise.id}"
+    end
+
+  haml :summary, locals: {
+    right: submission.right,
+    wrong: submission.wrong,
+    accuracy: submission.accuracy,
+    wpm: submission.wpm,
+    exercise: exercise,
+    lesson: lesson,
+    next_path: next_path
+  }
 end
