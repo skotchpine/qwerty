@@ -1,25 +1,34 @@
 if Lesson.all.none?
   {
-    'Home Row' => [
-      'jjkjk kkjkj jkjkk kjkjj jjkjj kkjkk jkjkj kjkjk',
-      'ffdfd ddfdf fdfdd dfdff ffdff ddfdd fdfdf dfdfd',
-      'llklk kklkl lklkk klkll llkll kklkk lklkl klklk',
-      'lljlj jjljl ljljj jljll lljll jjljj ljljl jljlj',
-      'ssdsd ddsds sdsdd dsdss ssdss ddsdd sdsds dsdsd',
-      'ssfsf ffsfs sfsff fsfss ssfss ffsff sfsfs fsfsf',
+    'Home Row Position' => [
+      'jkkjk kjkkj jkjjk kkjkj jjkjk jkjkk kjkjj jkjkj kkjkj jjkjk',
+      'dffdf fdffd dfddf ffdfd ddfdf dfdff fdfdd dfdfd ffdfd ddfdf',
+      'dkfdj jdfkf kjdkf fkjdk fkdkj fkfdj kjdkf dfkfj kfkdj fjkjd',
+      'djk kjd dfk kfdf jdfk jkjdj',
+      'l;;l; ;l;;l l;ll; ;;l;l ll;l; l;l;; ;l;ll l;l;l ;;l;l ll;l;',
+      'lfk ;fk djlf kflf ;fkj kj;f dj;;f ;f;lf ;lfkf dljdf ;f;lfkf',
+      'assas sassa asaas ssasa aasas asass sasaa asasa ssasa aasas',
+      'all add; as ask; sad; fas lad dak; dad fad fall; lass dall;',
+      'alas dald fall; dad flak; lass sad; fass; all fall lad; ask',
     ],
-    'Index Fingers' => %w[],
+    'Index Fingers' => %w[
+      'ghhgh hghhg ghggh hhghg gghgh ghghh hghgg ghghg hhghg gghgh',
+      'gad has aha; had flag gas; sag ash; gag dash glag half;',
+      'gaff; hall hald saga hash; sash gall flag; has dash half',
+      
+    ],
+    'Middle and Ring Fingers' => %w[],
     'Pinkies' => %w[],
     'Repetition 1' => %w[],
     'Repetition 2' => %w[],
     'Repetition 3' => %w[],
     'Repetition 4' => %w[],
-    'Mostly Vowels' => %w[],
-    'Full Alphabet' => %w[],
-    'Common Chords' => %w[],
-    'Top Row' => %w[],
-    'Shift Keys' => %w[],
-    'Top Row 2' => %w[],
+    'Vowels Сryptogram' => %w[],
+    'Alphabet Сryptogram' => %w[],
+    'Common Combinations' => %w[],
+    'Numbers and Punctuation' => %w[],
+    'Using Shift Key' => %w[],
+    'Numbers and Punctuation 2' => %w[],
     'Sentences' => %w[],
   }
     .each_with_index do |(title, exercises), i|
