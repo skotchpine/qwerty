@@ -21,11 +21,11 @@ $(function() {
     const updateView = function() {
         if (!start) return;
 
-        accuracy = (Math.round(i / (i + missed) * 1000) / 10) + '%';
+        accuracy = (Math.round(i / (i + missed) * 100)) + '%';
 
         const now = new Date();
         const elapsed = (now - start) / 60000;
-        wpm = Math.round((i / 5) / elapsed * 10) / 10;
+        wpm = Math.round((i / 5) / elapsed);
         $('#wpm .figure').html(wpm);
     }
 

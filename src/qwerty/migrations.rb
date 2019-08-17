@@ -6,8 +6,7 @@ if not database.table_exists?(:users)
     database.create_table :users do
       primary_key :id
 
-      String :first_name
-      String :last_name
+      String :username
       String :password_digest
       
       timestamp :created_at
@@ -59,6 +58,10 @@ if not database.table_exists?(:submissions)
       Integer :wrong,    null: false
       Integer :accuracy, null: false
       Integer :wpm,      null: false
+
+      Boolean :complete, null: false
+      Boolean :accurate, null: false
+      Boolean :fast, null: false
       
       timestamp :created_at
     end

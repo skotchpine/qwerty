@@ -5,7 +5,7 @@
 
 body {
     background: #55c5ff;
-    min-width: 780px;
+    min-width: 600px;
 }
 
 .pointer {
@@ -16,7 +16,10 @@ body {
     color: #bbb;
 }
 
+.grey {
+    color: #444;
+}
+
 .complete {
     color: gold;
-    text-shadow: 0 0 1px black;
 }

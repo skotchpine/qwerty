@@ -4,7 +4,7 @@
       .card
         .card-body
           %h2.card-title
-            Hello, #{first_name}
+            Hello, #{session[:username]}
             %a.btn.btn-default.float-right{href: '/app/sign_out'} Sign out
           
           %hr
@@ -20,9 +20,9 @@
                       %h4= lesson.title
 
                     .col-5
-                      %i.fas.fa-check.ml-3.mr-3.h4.incomplete
-                      %i.fas.fa-bullseye.ml-3.mr-3.h4.incomplete
-                      %i.fas.fa-bolt.ml-3.mr-3.h4.incomplete
+                      %i.fas.fa-check.ml-3.mr-3.h4{class: (lesson.complete(user_id) ? :complete : :incomplete)}
+                      %i.fas.fa-bullseye.ml-3.mr-3.h4{class: (lesson.accurate(user_id) ? :complete : :incomplete)}
+                      %i.fas.fa-bolt.ml-3.mr-3.h4{class: (lesson.fast(user_id) ? :complete : :incomplete)}
 
                     .col-2.text-right
                       %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{exercises_id}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
@@ -31,8 +31,8 @@
                   .row
                     - lesson.exercises.each_with_index do |exercise, j|
                       .col-sm-6.col-md-4.col-lg-3
-                        %a.btn.btn-block.mb-2{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}", class: (j.zero? ? 'btn-primary' : 'btn-light')}
+                        %a.btn.btn-block.btn-light.mb-4{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
                           %h5.text-center Exercise #{j+1}
-                          %i.fas.fa-check.ml-2.mr-2.incomplete
-                          %i.fas.fa-bullseye.ml-2.mr-2.incomplete
-                          %i.fas.fa-bolt.ml-2.mr-2.incomplete
+                          %i.fas.fa-check.ml-2.mr-2{class: (exercise.complete(user_id) ? :complete : :incomplete)}
+                          %i.fas.fa-bullseye.ml-2.mr-2{class: (exercise.accurate(user_id) ? :complete : :incomplete)}
+                          %i.fas.fa-bolt.ml-2.mr-2{class: (exercise.fast(user_id) ? :complete : :incomplete)}

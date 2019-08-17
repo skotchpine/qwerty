@@ -19,15 +19,14 @@ get '/auth/sign_in' do
 end
 
 post '/auth/sign_up' do
-  users = User.where(first_name: params[:first_name], last_name: params[:last_name])
+  users = User.where(username: params[:username])
   
   if users.any?
     redirect '/auth/sign_in?error=You already have an account. Sign in here.', 301
   else
 
     user = User.new \
-      first_name: params[:first_name],
-      last_name: params[:last_name],
+      username: params[:username],
       password: params[:password],
       password_confirmation: params[:password]
 
@@ -40,13 +39,12 @@ post '/auth/sign_up' do
 end
 
 post '/auth/sign_in' do
-  user = User.where(first_name: params[:first_name], last_name: params[:last_name]).first
+  user = User.where(username: params[:username]).first
 
   if user
     if user.authenticate(params[:password])
       session[:user_id] = user.id
-      session[:first_name] = user.first_name
-      session[:last_name] = user.last_name
+      session[:username] = user.username
 
       redirect '/app/home', 301
     else

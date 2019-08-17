@@ -1,18 +1,18 @@
 .container
   .card.mt-5.text-center
     .card-header.bg-light
-      %h2.card-title Home row # 1
-    .card-body
+      %h2.card-title Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
+    .card-body.pt-5
       .row
         .col
-          %h2= wrong
-          %h4 typos
+          %i.d-block.display-3.fas.fa-check{class: (complete ? :complete : :incomplete)}
+          %h2.mt-4.grey #{wrong} typos
         .col
-          %h2 #{accuracy}%
-          %h4 accuracy
+          %i.d-block.display-3.fas.fa-bullseye{class: (accurate ? :complete : :incomplete)}
+          %h2.mt-4.grey #{accuracy}% accuracy
         .col
-          %h2= wpm
-          %h4 wpm
+          %i.d-block.display-3.fas.fa-bolt{class: (fast ? :complete : :incomplete)}
+          %h2.mt-4.grey #{wpm} wpm
     .card-footer.bg-light
       .row
         .col
@@ -21,11 +21,11 @@
             %i.fas.fa-redo
             restart
         #home.col
-          %a.btn.btn-secondary{href: '/app/home'}
+          %a.btn.btn-link{href: '/app/home'}
             %i.fas.fa-home
             home
         #next.col
-          %a.btn.btn-success{href: next_path}
+          %a.btn{href: next_path, class: (complete ? 'btn-primary' : 'disabled btn-dark')}
             %i.fas.fa-arrow-right
             next
         .col

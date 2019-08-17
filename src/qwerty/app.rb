@@ -12,7 +12,10 @@ end
 get '/app/home' do
   # redirect 'http://localhost:4567/app/lessons/1/exercises/1', 301
   lessons = Lesson.all
-  haml :home, locals: { first_name: session[:first_name], lessons: lessons }
+  haml :home, locals: {
+    user_id: session[:user_id],
+    lessons: lessons,
+  }
 end
 
 get '/app/lessons/:lesson_id/exercises/:exercise_id' do
@@ -22,15 +25,26 @@ get '/app/lessons/:lesson_id/exercises/:exercise_id' do
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do
+  complete = params[:wrong].to_i < 3
+  accurate = complete && params[:accuracy] == '100%'
+  fast = accurate && params[:wpm].to_i > 30
+
   submission =
     Submission.create \
       user_id: session[:user_id].to_i,
       exercise_id: params[:exercise_id].to_i,
+
       right: params[:right],
       wrong: params[:wrong],
       accuracy: params[:accuracy],
       wpm: params[:wpm],
+
+      complete: complete,
+      accurate: accurate,
+      fast: fast,
+
       created_at: DateTime.now
+
   { id: submission.id }.to_json
 end
 
@@ -59,8 +73,14 @@ get '/app/submissions/:submission_id' do
     wrong: submission.wrong,
     accuracy: submission.accuracy,
     wpm: submission.wpm,
+
+    complete: submission.complete,
+    accurate: submission.accurate,
+    fast: submission.fast,
+
     exercise: exercise,
     lesson: lesson,
-    next_path: next_path
+
+    next_path: next_path,
   }
 end  
