@@ -1,5 +1,12 @@
 source 'https://rubygems.org'
 
-gem 'sinatra'
-gem 'sinatra-reloader'
-gem 'haml'
+%w[
+  sinatra
+  sinatra-sequel
+  sinatra-reloader
+  sequel
+  sequel_secure_password
+  sqlite3
+  haml
+]
+  .each { |g| gem g }

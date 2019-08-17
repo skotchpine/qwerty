@@ -34,9 +34,11 @@ $(function() {
     var caps = false;
 
     $(window).keydown(function(event) {
+        // https://stackoverflow.com/questions/18967532/window-location-reload-not-working-for-firefox-and-chrome
         if (event.keyCode == 27) {
-            reset();
-            return;
+            setTimeout(function() {
+                window.location.reload();
+            });
         }
 
         if (!start) start = new Date();

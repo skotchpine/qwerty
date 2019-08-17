@@ -1,13 +1,3 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font: 71%/1.5 Verdana, Sans-Serif;
-    background: #55c5ff;
-}
-
 #container {
     margin: 40px auto;
     width: 90%;
@@ -70,11 +60,13 @@ h1 {
 }
 
 #wpm {
-    font-size: 2em;
+    padding: .75em;
+    font-size: 1.25em;
 }
 
 #typos {
-    font-size: 2em;
+    padding: .75em;
+    font-size: 1.25em;
 }
 
 .key {

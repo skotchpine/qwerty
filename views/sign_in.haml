@@ -1,0 +1,21 @@
+.container.mt-5
+  .col-4.offset-4
+    .card
+      .card-body
+        %h2.card-title Sign in
+
+        - if params[:error]
+          %h5.text-danger= params[:error]
+
+        %form{action: '/auth/sign_in', method: :post}
+          = haml :user_fields
+
+          %hr
+
+          %button.btn.btn-block.btn-primary Sign in
+
+        %hr
+
+        .text-right.mt-2
+          Don't have an account?
+          %a.btn.btn-link{href: '/auth/sign_up'} Create one

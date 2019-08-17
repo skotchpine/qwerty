@@ -1,6 +1,144 @@
-%w[rubygems sinatra sinatra/reloader haml].each(&method(:require))
+%w[
+  rubygems
+  sinatra
+  sinatra/reloader
+  sinatra/content_for
+  haml
+  sequel
+  sinatra/sequel
+  sequel_secure_password
+  sqlite3
+]
+  .each(&method(:require))
 
+#
+# Sinatra Setup
+#
 set :public_folder, File.dirname(__FILE__)
+set :database, 'sqlite://qwerty.db'
+enable :sessions
+set :session_store, Rack::Session::Pool
+use Rack::Session::Pool, :expire_after => 2592000
+use Rack::Protection::RemoteToken
+use Rack::Protection::SessionHijacking
+
+#
+# USERS
+#
+if not database.table_exists?(:users)
+  migration 'create users' do
+    database.create_table :users do
+      primary_key :id
+
+      String :first_name
+      String :last_name
+      String :password_digest
+      
+      timestamp :created_at
+      timestamp :updated_at
+    end
+  end
+end
+
+#
+# LESSONS
+#
+if not database.table_exists?(:lessons)
+  migration 'create lessons' do
+    database.create_table :lessons do
+      primary_key :id
+
+      Integer :position
+      String :title
+    end
+  end
+end
+
+#
+# EXERCISES
+#
+if not database.table_exists?(:exercises)
+  migration 'create exercises' do
+    database.create_table :exercises do
+      primary_key :id
+      foreign_key :lesson_id, :lessons, null: false
+
+      Integer :position
+      String :exercise
+    end
+  end
+end
+
+#
+# SUBMISSIONS
+#
+if not database.table_exists?(:submissions)
+  migration 'create submissions' do
+    database.create_table :submissions do
+      primary_key :id
+      foreign_key :user_id,     :users,     null: false
+      foreign_key :exercise_id, :exercises, null: false
+
+      Integer :right,    null: false
+      Integer :wrong,    null: false
+      Integer :accuracy, null: false
+      Integer :wpm,      null: false
+      Integer :passed,   null: false
+      
+      timestamp :created_at
+    end
+  end
+end
+
+#
+# Models
+#
+class User < Sequel::Model
+  one_to_many :submissions
+  plugin :secure_password
+end
+
+class Lesson < Sequel::Model
+  one_to_many :exercises
+end
+
+class Exercise < Sequel::Model
+  many_to_one :lesson
+  one_to_many :submissions
+end
+
+class Submission < Sequel::Model
+  many_to_one :exercise
+  many_to_one :user
+end
+
+if Lesson.all.none?
+  {
+    'Home Row' => %w[
+      jjkjk jkjkk kjkkj jkjjj jkkkj jkjkj kjkkj kkjkj
+      ddfdf dfdff fdffd dfddd dfffd dfdfd fdffd ffdfd
+    ],
+    'Index Fingers' => %w[],
+    'Pinkies' => %w[],
+    'Repetition 1' => %w[],
+    'Repetition 2' => %w[],
+    'Repetition 3' => %w[],
+    'Repetition 4' => %w[],
+    'Mostly Vowels' => %w[],
+    'Full Alphabet' => %w[],
+    'Common Chords' => %w[],
+    'Top Row' => %w[],
+    'Shift Keys' => %w[],
+    'Top Row 2' => %w[],
+    'Sentences' => %w[],
+  }
+    .each_with_index do |(title, exercises), i|
+      lesson = Lesson.create(title: title, position: i)
+      exercises.each_with_index do |exercise, j|
+        lesson.add_exercise(exercise: exercise, position: j)
+      end
+    end
+end
 
 class Key
   attr_accessor :on, :off, :code, :finger
@@ -82,18 +220,103 @@ def key_rows
 end
 
 def lesson_keys
-  # 'jjkjj jkjkk kjkkj kkjkk kkjjk jkjjk kjkjj'.split('')
-  'One Lone Ranger shot arrows around the moon'.split('')
+  'jjkjj jkjkk kjkkj kkjkk kkjjk jkjjk kjkjj'.split('')
+  # 'One Lone Ranger shot arrows around the moon'.split('')
+end
+
+template :layout do
+  File.read(File.join(__dir__, 'views', 'layout.haml'))
 end
 
 get '/' do
-  haml :index, locals: { key_rows: key_rows, lesson_keys: lesson_keys }
+  if session[:user_id]
+    redirect '/app/home', 301
+  else
+    redirect '/auth/sign_in', 301
+  end
 end
 
-post '/' do
+before '/auth/*' do
+  request.path_info = "/app/home" if session[:user_id]
+end
+
+get '/auth/sign_up' do
+  if session[:user_id]
+    redirect "/app/home?error=You're already signed in", 301
+  else
+    haml :sign_up
+  end
+end
+
+get '/auth/sign_in' do
+  if session[:user_id]
+    redirect "/app/home?error=You're already signed in", 301
+  else
+    haml :sign_in
+  end
+end
+
+post '/auth/sign_up' do
+  users = User.where(first_name: params[:first_name], last_name: params[:last_name])
+  
+  if users.any?
+    redirect '/auth/sign_in?error=You already have an account. Sign in here.', 301
+  else
+
+    user = User.new \
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      password: params[:password],
+      password_confirmation: params[:password]
+
+    if user.save
+      redirect '/app/home', 301
+    else
+      haml :sign_up
+    end
+  end
+end
+
+post '/auth/sign_in' do
+  user = User.where(first_name: params[:first_name], last_name: params[:last_name]).first
+
+  if user
+    if user.authenticate(params[:password])
+      session[:user_id] = user.id
+      session[:first_name] = user.first_name
+      session[:last_name] = user.last_name
+
+      redirect '/app/home', 301
+    else
+      redirect "/auth/sign_in?error=Access denied.", 403
+    end
+  else
+    redirect "/auth/sign_in?error=That account doesn't exist.", 403
+  end
+end
+
+before '/app/*' do
+  request.path_info = "/sign_in?error=You have to sign in first." unless session[:user_id]
+end
+
+get '/app/sign_out' do
+  session.clear
+  haml :sign_in
+end
+
+get '/app/home' do
+  lessons = Lesson.all
+  haml :home, locals: { first_name: session[:first_name], lessons: lessons }
+end
+
+get '/app/lessons/:lesson_index/exercises/:exercise_index' do
+  haml :lesson, locals: { key_rows: key_rows, lesson_keys: lesson_keys }
+end
+
+post '/app/lessons/:lesson_index/exercises/:exercise_index' do
   { right: params[:right], wrong: params[:wrong], accuracy: params[:accuracy], wpm: params[:wpm] }.to_json
 end
 
-get '/summary' do
+get '/app/lessons/:lesson_index/exercises/:exercise_index/summary' do
   haml :summary, locals: { right: 20, wrong: 5, accuracy: '80%', wpm: 35}
 end
