@@ -22,11 +22,11 @@
 										.col-5
 											.row
 												.col
-													%i.fas.fa-check.h4{class: (rand > 0.5 ? :complete : :incomplete)}
+													%i.fas.fa-check.h4.incomplete
 												.col
-													%i.fas.fa-bullseye.h4{class: (rand > 0.5 ? :complete : :incomplete)}
+													%i.fas.fa-bullseye.h4.incomplete
 												.col
-													%i.fas.fa-bolt.h4{class: (rand > 0.5 ? :complete : :incomplete)}
+													%i.fas.fa-bolt.h4.incomplete
 
 										.col-2.text-right
 											%i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{exercises_id}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
@@ -39,8 +39,8 @@
 													%h5 Exercise #{j+1}
 													.row
 														.col
-															%i.fas.fa-check{class: (rand > 0.5 ? :complete : :incomplete)}
+															%i.fas.fa-check.incomplete
 														.col
-															%i.fas.fa-bullseye{class: (rand > 0.5 ? :complete : :incomplete)}
+															%i.fas.fa-bullseye.incomplete
 														.col
-															%i.fas.fa-bolt{class: (rand > 0.5 ? :complete : :incomplete)}
+															%i.fas.fa-bolt.incomplete
