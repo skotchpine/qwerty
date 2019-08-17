@@ -35,7 +35,7 @@
 									.row
 										- lesson.exercises.each_with_index do |exercise, j|
 											.col-sm-4.col-md-3
-												%a.btn.btn-secondary{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
+												%a.btn{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}", class: (j.zero? ? 'btn-primary' : 'btn-secondary')}
 													%h5 Exercise #{j+1}
 													.row
 														.col
