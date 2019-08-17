@@ -11,11 +11,10 @@ if Lesson.all.none?
       'all add; as ask; sad; fas lad dak; dad fad fall; lass dall;',
       'alas dald fall; dad flak; lass sad; fass; all fall lad; ask',
     ],
-    'Index Fingers' => %w[
+    'Index Fingers' => [
       'ghhgh hghhg ghggh hhghg gghgh ghghh hghgg ghghg hhghg gghgh',
       'gad has aha; had flag gas; sag ash; gag dash glag half;',
       'gaff; hall hald saga hash; sash gall flag; has dash half',
-      
     ],
     'Middle and Ring Fingers' => %w[],
     'Pinkies' => %w[],

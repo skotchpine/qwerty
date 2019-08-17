@@ -16,13 +16,13 @@
               .card.mt-2.mb-2{id: lesson_id}
                 .card-header.bg-light.pt-4
                   .row
-                    .col-5
+                    .col-sm-6.col-md-5
                       %h4= lesson.title
 
-                    .col-5
-                      %i.fas.fa-check.ml-3.mr-3.h4{class: (lesson.complete(user_id) ? :complete : :incomplete)}
-                      %i.fas.fa-bullseye.ml-3.mr-3.h4{class: (lesson.accurate(user_id) ? :complete : :incomplete)}
-                      %i.fas.fa-bolt.ml-3.mr-3.h4{class: (lesson.fast(user_id) ? :complete : :incomplete)}
+                    .col-sm-4.col-md-5
+                      %i.fas.fa-check.ml-2.mr-2.h4{class: (lesson.complete(user_id) ? :complete : :incomplete)}
+                      %i.fas.fa-bullseye.ml-2.mr-2.h4{class: (lesson.accurate(user_id) ? :complete : :incomplete)}
+                      %i.fas.fa-bolt.ml-2.mr-2.h4{class: (lesson.fast(user_id) ? :complete : :incomplete)}
 
                     .col-2.text-right
                       %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{exercises_id}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
