@@ -6,7 +6,7 @@ get '/app/sign_out' do
   puts session
   session.clear
   puts session
-  redirect :sign_in, 301
+  redirect '/auth/sign_in', 301
 end
 
 get '/app/home' do
