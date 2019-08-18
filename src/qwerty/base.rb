@@ -1,5 +1,5 @@
 template :layout do
-  File.read(File.join(__dir__, 'views', 'layout.haml'))
+  File.read(File.join(File.dirname(File.dirname(__dir__)), 'views', 'layout.haml'))
 end
 
 get '/' do

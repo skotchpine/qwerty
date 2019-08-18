@@ -17,6 +17,7 @@
   models
   seeds
   keyboard
+  base
   auth
   app
 ]

@@ -10,11 +10,67 @@ get '/app/sign_out' do
 end
 
 get '/app/home' do
-  # redirect 'http://localhost:4567/app/lessons/1/exercises/1', 301
-  lessons = Lesson.all
+  user_id = session[:user_id]
+
+  last_complete_lesson_index = -1
+  lessons_vm = Lesson.all.map.with_index do |lesson, i|
+    lesson_complete, lesson_accurate, lesson_fast =
+      lesson.complete(user_id), lesson.accurate(user_id), lesson.fast(user_id)
+
+    last_complete_lesson_index = i if lesson_complete
+
+    last_complete_exercise_index = -1
+    exercises_vm = lesson.exercises.map.with_index do |exercise, j|
+      exercise_complete, exercise_accurate, exercise_fast =
+        exercise.complete(user_id), exercise.accurate(user_id), exercise.fast(user_id)
+
+      last_complete_exercise_index = j if exercise_complete
+
+      {
+        id: exercise.id,
+        
+        complete: exercise_complete,
+        accurate: exercise_accurate,
+        fast: exercise_fast,
+
+        next: false,
+        btn_class: exercise_complete ? 'btn-light' : 'btn-disabled',
+        disabled: !exercise_complete,
+      }
+    end
+    if last_complete_exercise_index < exercises_vm.size - 1
+      exercises_vm[last_complete_exercise_index + 1][:next] = true
+      exercises_vm[last_complete_exercise_index + 1][:btn_class] = 'btn-light'
+      exercises_vm[last_complete_exercise_index + 1][:disabled] = false
+    end
+
+    {
+      id: lesson.id,
+      title: lesson.title,
+
+      tag: "lesson-#{lesson.id}",
+      exercises_tag: "lesson-#{lesson.id}-exercises",
+
+      complete: lesson_complete,
+      accurate: lesson_accurate,
+      fast: lesson_fast,
+
+      next: false,
+      bg_class: lesson_complete ? 'bg-light' : 'incomplete',
+      disabled: !lesson_complete,
+
+      exercises: exercises_vm,
+    }
+  end
+  if last_complete_lesson_index < lessons_vm.size - 1
+    lessons_vm[last_complete_lesson_index + 1][:next] = true
+    lessons_vm[last_complete_lesson_index + 1][:bg_class] = 'bg-light'
+    lessons_vm[last_complete_lesson_index + 1][:disabled] = false
+  end
+
   haml :home, locals: {
     user_id: session[:user_id],
-    lessons: lessons,
+    lessons: lessons_vm,
   }
 end
 
@@ -25,7 +81,7 @@ get '/app/lessons/:lesson_id/exercises/:exercise_id' do
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do
-  complete = params[:wrong].to_i < 3
+  complete = params[:wrong].to_i < 6
   accurate = complete && params[:accuracy] == '100%'
   fast = accurate && params[:wpm].to_i > 30
 
@@ -57,8 +113,12 @@ get '/app/submissions/:submission_id' do
     if lesson.exercises.last == exercise
       next_lesson = Lesson.where(position: lesson.position + 1).first
 
+      redirect '/app/home', 301 unless next_lesson
+
+      next_exercise = Exercise.where(lesson_id: next_lesson.id, position: 0).first
+
       if next_lesson
-        "/app/lessons/#{next_lesson.id}/exercises/1"
+        "/app/lessons/#{next_lesson.id}/exercises/#{next_exercise.id}"
       else
         "/app/home"
       end

@@ -11,28 +11,27 @@
 
           .accordion#lessons
             - lessons.each_with_index do |lesson, i|
-              - lesson_id = "lesson-#{i}"
-              - exercises_id = "lesson-#{i}-exercises"
-              .card.mt-2.mb-2{id: lesson_id}
-                .card-header.bg-light.pt-4
+              .card.mt-2.mb-2{id: lesson[:tag]}
+                .card-header.pt-4{class: "#{lesson[:bg_class]}"}
                   .row
                     .col-sm-6.col-md-5
-                      %h4= lesson.title
+                      %h4= lesson[:title]
 
                     .col-sm-4.col-md-5
-                      %i.fas.fa-check.ml-2.mr-2.h4{class: (lesson.complete(user_id) ? :complete : :incomplete)}
-                      %i.fas.fa-bullseye.ml-2.mr-2.h4{class: (lesson.accurate(user_id) ? :complete : :incomplete)}
-                      %i.fas.fa-bolt.ml-2.mr-2.h4{class: (lesson.fast(user_id) ? :complete : :incomplete)}
+                      %i.fas.fa-check.ml-2.mr-2.h4{class: (lesson[:complete] ? :complete : :incomplete)}
+                      %i.fas.fa-bullseye.ml-2.mr-2.h4{class: (lesson[:accurate] ? :complete : :incomplete)}
+                      %i.fas.fa-bolt.ml-2.mr-2.h4{class: (lesson[:fast] ? :complete : :incomplete)}
 
                     .col-2.text-right
-                      %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{exercises_id}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
+                      - unless lesson[:disabled]
+                        %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{lesson[:exercises_tag]}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
 
-                .card-body.collapse{class: (:show if i.zero?), id: exercises_id, 'aria-lebelledby': lesson_id, 'data-parent': '#lessons'}
+                .card-body.collapse{class: (:show if lesson[:next]), id: lesson[:exercises_tag], 'aria-lebelledby': lesson[:tag], 'data-parent': '#lessons'}
                   .row
-                    - lesson.exercises.each_with_index do |exercise, j|
+                    - lesson[:exercises].each_with_index do |exercise, j|
                       .col-sm-6.col-md-4.col-lg-3
-                        %a.btn.btn-block.btn-light.mb-4{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
+                        %a.btn.btn-block.mb-4{href: "/app/lessons/#{lesson[:id]}/exercises/#{exercise[:id]}", class: "#{exercise[:btn_class]} #{:disabled if exercise[:disabled]}"}
                           %h5.text-center Exercise #{j+1}
-                          %i.fas.fa-check.ml-2.mr-2{class: (exercise.complete(user_id) ? :complete : :incomplete)}
-                          %i.fas.fa-bullseye.ml-2.mr-2{class: (exercise.accurate(user_id) ? :complete : :incomplete)}
-                          %i.fas.fa-bolt.ml-2.mr-2{class: (exercise.fast(user_id) ? :complete : :incomplete)}
+                          %i.fas.fa-check.ml-2.mr-2{class: (exercise[:complete] ? :complete : :incomplete)}
+                          %i.fas.fa-bullseye.ml-2.mr-2{class: (exercise[:accurate] ? :complete : :incomplete)}
+                          %i.fas.fa-bolt.ml-2.mr-2{class: (exercise[:fast] ? :complete : :incomplete)}
