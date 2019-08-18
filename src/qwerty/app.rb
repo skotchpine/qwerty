@@ -68,8 +68,27 @@ get '/app/home' do
     lessons_vm[last_complete_lesson_index + 1][:disabled] = false
   end
 
+  stats_query = <<~SQL
+    select AVG(wpm) as avg_wpm,
+           SUM(wrong) as total_typos,
+           COUNT(id) as total_submissions,
+           AVG(wrong) as avg_typos,
+           AVG(accuracy) as avg_accuracy
+    from submissions
+    where user_id = #{user_id};
+  SQL
+  stats = database.fetch(stats_query).first
+  puts stats
+
   haml :home, locals: {
-    user_id: session[:user_id],
+    user_id: user_id,
+
+    avg_wpm: stats[:avg_wpm].round(1),
+    avg_typos: stats[:avg_typos].round(1),
+    avg_accuracy: stats[:avg_accuracy].round(1),
+    total_typos: stats[:total_typos].round(1),
+    total_subimssions: stats[:total_submissions],
+
     lessons: lessons_vm,
   }
 end
