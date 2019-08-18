@@ -51,7 +51,7 @@ post '/auth/sign_in' do
       redirect "/auth/sign_in?error=Access denied.", 301
     end
   else
-    redirect "/auth/sign_in?error=That account doesn't exist.", 301
+    redirect "/auth/sign_up?error=That account doesn't exist. Sign up here.", 301
   end
 end
   

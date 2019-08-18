@@ -1,18 +1,39 @@
+- content_for :head do
+  :css
+    #summary {
+      height: 240px;
+    }
+
+- content_for :foot do
+  :javascript
+    $(function() {
+      $('#complete').hide().removeClass('d-none')
+      $('#accurate').hide().removeClass('d-none')
+      $('#fast').hide().removeClass('d-none')
+
+      $('#complete').fadeIn(900, () =>
+        $('#accurate').fadeIn(900, () =>
+          $('#fast').fadeIn(900)));
+    });
+
 .container
   .card.mt-5.text-center
     .card-header.bg-light
-      %h2.card-title Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
-    .card-body.pt-5
+      %h2.card-title Exercise #{exercise.position + 1} of #{lesson.exercises.size}
+    .card-body.pt-5#summary
       .row
         .col
-          %i.d-block.display-3.fas.fa-check{class: (complete ? :complete : :incomplete)}
-          %h2.mt-4.grey #{wrong} typos
+          #complete.d-none
+            %i.d-block.display-3.fas.fa-check{class: (complete ? :complete : :incomplete)}
+            %h2.mt-4.grey #{wrong} typos
         .col
-          %i.d-block.display-3.fas.fa-bullseye{class: (accurate ? :complete : :incomplete)}
-          %h2.mt-4.grey #{accuracy}% accuracy
+          #accurate.d-none
+            %i.d-block.display-3.fas.fa-bullseye{class: (accurate ? :complete : :incomplete)}
+            %h2.mt-4.grey #{accuracy}% accuracy
         .col
-          %i.d-block.display-3.fas.fa-bolt{class: (fast ? :complete : :incomplete)}
-          %h2.mt-4.grey #{wpm} wpm
+          #fast.d-none
+            %i.d-block.display-3.fas.fa-bolt{class: (fast ? :complete : :incomplete)}
+            %h2.mt-4.grey #{wpm} wpm
     .card-footer.bg-light
       .row
         .col
