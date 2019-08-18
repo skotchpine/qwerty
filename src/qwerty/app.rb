@@ -83,11 +83,11 @@ get '/app/home' do
   haml :home, locals: {
     user_id: user_id,
 
-    avg_wpm: stats[:avg_wpm].round(1),
-    avg_typos: stats[:avg_typos].round(1),
-    avg_accuracy: stats[:avg_accuracy].round(1),
-    total_typos: stats[:total_typos].round(1),
-    total_subimssions: stats[:total_submissions],
+    avg_wpm: stats[:avg_wpm].to_i.round(1),
+    avg_typos: stats[:avg_typos].to_i.round(1),
+    avg_accuracy: stats[:avg_accuracy].to_i.round(1),
+    total_typos: stats[:total_typos].to_i.round(1),
+    total_subimssions: stats[:total_submissions].to_i,
 
     lessons: lessons_vm,
   }
