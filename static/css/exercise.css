@@ -38,50 +38,50 @@ h1 {
 @keyframes "blink" {
     from,
     to {
-        color: transparent;
+        color: black;
     }
     50% {
-        color: black;
+        color: transparent;
     }
 }
 
 @-moz-keyframes "blink" {
     from,
     to {
-        color: transparent;
+        color: black;
     }
     50% {
-        color: black;
+        color: transparent;
     }
 }
 
 @-webkit-keyframes "blink" {
     from,
     to {
-        color: transparent;
+        color: black;
     }
     50% {
-        color: black;
+        color: transparent;
     }
 }
 
 @-ms-keyframes "blink" {
     from,
     to {
-        color: transparent;
+        color: black;
     }
     50% {
-        color: black;
+        color: transparent;
     }
 }
 
 @-o-keyframes "blink" {
     from,
     to {
-        color: transparent;
+        color: black;
     }
     50% {
-        color: black;
+        color: transparent;
     }
 }
 

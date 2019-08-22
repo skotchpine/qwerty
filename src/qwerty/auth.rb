@@ -31,6 +31,9 @@ post '/auth/sign_up' do
       password_confirmation: params[:password]
 
     if user.save
+      session[:user_id] = user.id
+      session[:username] = user.username
+
       redirect '/app/home', 301
     else
       haml :sign_up
