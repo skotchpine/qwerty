@@ -13,6 +13,9 @@ $(function() {
     var k = $('span[i="' + i + '"]');
     var x = k.html();
 
+    const cursor = '<span class="cursor">|</span>';
+    $('span[i="' + i + '"]').before(cursor);
+
     var missed = 0;
     var start;
     var accuracy;
@@ -68,6 +71,9 @@ $(function() {
                 k.removeClass('missed');
 
                 i++;
+                $('.cursor').remove();
+                $('span[i="' + i + '"]').before(cursor);
+
 
                 if (i < n) {
                     k = $('span[i="' + i + '"]');

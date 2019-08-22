@@ -24,14 +24,75 @@ h1 {
     -webkit-border-radius: 5px;
 }
 
+.cursor {
+    width: 0;
+    padding: 0;
+    margin: 0 -2px 0 -4px;
+    -webkit-animation: 1.25s blink step-end infinite;
+    -moz-animation: 1.25s blink step-end infinite;
+    -ms-animation: 1.25s blink step-end infinite;
+    -o-animation: 1.25s blink step-end infinite;
+    animation: 1.25s blink step-end infinite;
+}
+
+@keyframes "blink" {
+    from,
+    to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-moz-keyframes "blink" {
+    from,
+    to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-webkit-keyframes "blink" {
+    from,
+    to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-ms-keyframes "blink" {
+    from,
+    to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
+@-o-keyframes "blink" {
+    from,
+    to {
+        color: transparent;
+    }
+    50% {
+        color: black;
+    }
+}
+
 .lessonKey {
-    margin: 0 -0.1em;
+    margin: 0 -5px 0 -1px;
     color: #000;
 }
 
 .lessonKey[key=" "] {
-    padding: 6px;
-    margin: 0 4px 0 -2px;
+    width: 10px;
+    display: inline-block;
 }
 
 .lessonKey.done {
@@ -43,7 +104,7 @@ h1 {
 }
 
 .missed[key=" "] {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.363);
 }
 
 #keyboard {

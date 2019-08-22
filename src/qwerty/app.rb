@@ -100,7 +100,7 @@ get '/app/lessons/:lesson_id/exercises/:exercise_id' do
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do
-  complete = params[:wrong].to_i < 6
+  complete = params[:wrong].to_i < 4
   accurate = complete && params[:accuracy] == '100%'
   fast = accurate && params[:wpm].to_i > 30
 
