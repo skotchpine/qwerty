@@ -8,13 +8,13 @@ $(function() {
         return $('.key[code=' + code + ']');
     }
 
-    const n = $('#write span').length;
+    const n = $('#write .lessonKey').length;
     var i = 0;
-    var k = $('span[i="' + i + '"]');
+    var k = $('.lessonKey[i="' + i + '"]');
     var x = k.html();
 
     const cursor = '<span class="cursor">|</span>';
-    $('span[i="' + i + '"]').before(cursor);
+    $('.lessonKey[i="' + i + '"]').before(cursor);
 
     var missed = 0;
     var start;
@@ -72,11 +72,11 @@ $(function() {
 
                 i++;
                 $('.cursor').remove();
-                $('span[i="' + i + '"]').before(cursor);
+                $('.lessonKey[i="' + i + '"]').before(cursor);
 
 
                 if (i < n) {
-                    k = $('span[i="' + i + '"]');
+                    k = $('.lessonKey[i="' + i + '"]');
                     x = k.html();
                 } else {
                     updateView();

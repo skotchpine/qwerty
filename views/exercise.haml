@@ -30,7 +30,10 @@
 
   #write
     - exercise.content.split('').each_with_index do |key, i|
-      %span.lessonKey{key: key, i: i}= key
+      - if key == ' '
+        %div.lessonKey{key: key, i: i}= key
+      - else
+        %span.lessonKey{key: key, i: i}= key
 
   #keyboard.raised
     - key_rows.each do |key_row|
