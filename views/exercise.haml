@@ -41,3 +41,11 @@
         %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
           %span.on= key.on
           %span.off= key.off
+
+#capsModal.modal.fade{tabindex: '-1', role: :dialog}
+  .modal-dialog{role: :dialog}
+    .modal-content
+      .modal-header
+        %h1.modal-title CapsLock is on
+      .modal-header
+        %p Push the CapsLock key to disable CapsLock before continuing your exercise.

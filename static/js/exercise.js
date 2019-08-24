@@ -43,27 +43,56 @@ $(function() {
                 window.location.reload();
             });
         }
-
         if (!start) start = new Date();
 
-        if (event.keyCode == 16 && !caps) {
-            $('.on').hide();
-            $('.off').show();
+        // if the key pressed was a letter
+        if (event.keyCode >= 65 && event.keyCode <= 90) {
+            const keyCode = event.key.charCodeAt(0);
+            const upperCase = keyCode >= 65 && keyCode <= 90;
+            const lowerCase = keyCode >= 97 && keyCode <= 122;
+
+            if ((upperCase && !event.shiftKey) || (lowerCase && event.shiftKey)) {
+                caps = true;
+                $('#capsModal').modal('show');
+            }
+        }
+
+        console.log(event);
+
+
+        if (event.keyCode == 16) {
+            if (caps) {
+                $('.off').hide();
+                $('.on').show();
+            } else {
+                $('.on').hide();
+                $('.off').show();
+            }
+            keyEl(event).addClass('down');
+
         } else if (event.keyCode == 20) {
             caps = !caps;
+
             if (caps) {
                 $('.on').hide();
                 $('.off').show();
                 $('.key[key="caps"]').addClass('down');
+
+                $('#capsModal').modal('show');
             } else {
                 $('.off').hide();
                 $('.on').show();
                 $('.key[key="caps"]').removeClass('down');
+
+                $('#capsModal').modal('hide');
             }
         } else {
             const el = keyEl(event);
 
             el.addClass('down');
+            if (event.keyCode == 9) {
+                setInterval(() => el.removeClass('down'), 1000);
+            }
 
             const key = el.attr('key');
             if (event.key == x || x == ' ' && key == 'space') {
@@ -73,7 +102,6 @@ $(function() {
                 i++;
                 $('.cursor').remove();
                 $('.lessonKey[i="' + i + '"]').before(cursor);
-
 
                 if (i < n) {
                     k = $('.lessonKey[i="' + i + '"]');
@@ -102,10 +130,17 @@ $(function() {
         }
     });
     $(window).keyup(function(event) {
-        if (event.keyCode == 16 && !caps) {
-            $('.off').hide();
-            $('.on').show();
-        } else if (event.keyCode != 20) {
+        if (event.keyCode == 16) {
+            if (caps) {
+                $('.on').hide();
+                $('.off').show();
+            } else {
+                $('.off').hide();
+                $('.on').show();
+            }
+        }
+
+        if (event.keyCode != 20) {
             keyEl(event).removeClass('down');
         }
     });
