@@ -38,6 +38,7 @@ get '/app/home' do
         disabled: !exercise_complete,
       }
     end
+
     if last_complete_exercise_index < exercises_vm.size - 1
       exercises_vm[last_complete_exercise_index + 1][:next] = true
       exercises_vm[last_complete_exercise_index + 1][:btn_class] = 'btn-light'
@@ -62,6 +63,7 @@ get '/app/home' do
       exercises: exercises_vm,
     }
   end
+
   if last_complete_lesson_index < lessons_vm.size - 1
     lessons_vm[last_complete_lesson_index + 1][:next] = true
     lessons_vm[last_complete_lesson_index + 1][:bg_class] = 'bg-light'
@@ -102,7 +104,7 @@ end
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do
   complete = params[:wrong].to_i < 4
   accurate = complete && params[:accuracy] == '100%'
-  fast = accurate && params[:wpm].to_i > 30
+  fast = complete && params[:wpm].to_i > 30
 
   submission =
     Submission.create \
@@ -119,6 +121,15 @@ post '/app/lessons/:lesson_id/exercises/:exercise_id' do
       fast: fast,
 
       created_at: DateTime.now
+
+  submission =
+    Submission.from_results \
+      session[:user_id].to_i,
+      params[:exercise_id].to_i,
+      params[:right].to_i,
+      params[:wrong].to_i,
+      params[:accuracy],
+      params[:wpm].to_i
 
   { id: submission.id }.to_json
 end

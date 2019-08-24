@@ -44,6 +44,15 @@ if not database.table_exists?(:exercises)
   end
 end
 
+migration 'add criteria to exercises' do
+  if !database[:exercises].columns.include?(:title)
+    database.add_column :exercises, :title, String
+    database.add_column :exercises, :max_typos, Integer
+    database.add_column :exercises, :min_wpm, Integer
+    database.add_column :exercises, :fast_wpm, Integer
+  end
+end
+
 #
 # SUBMISSIONS
 #
