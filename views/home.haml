@@ -8,15 +8,22 @@
             %a.btn.btn-default.float-right{href: '/app/sign_out'} Sign out
           
           %hr
-          avg_wpm: #{avg_wpm}
-          %br
-          avg_typos: #{avg_typos}
-          %br
-          avg_accuracy: #{avg_accuracy}
-          %br
-          total_typos: #{total_typos}
-          %br
-          total_subimssions: #{total_subimssions}
+
+          -# avg_wpm: #{avg_wpm}
+          -# %br
+          -# avg_typos: #{avg_typos}
+          -# %br
+          -# avg_accuracy: #{avg_accuracy}
+          -# %br
+          -# total_typos: #{total_typos}
+          -# %br
+          -# total_subimssions: #{total_subimssions}
+
+          - top_five.each.with_index(1) do |(username, wpm), i|
+            %h5
+              \##{i}:
+              %span.badge.badge-success #{wpm} wpm
+              = username
           %hr
 
           .accordion#lessons

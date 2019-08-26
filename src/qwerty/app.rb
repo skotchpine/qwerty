@@ -80,7 +80,17 @@ get '/app/home' do
     where user_id = #{user_id};
   SQL
   stats = database.fetch(stats_query).first
-  puts stats
+
+  top_five_query = <<~SQL
+    select u.username as username,
+           max(s.wpm) as wpm
+    from users u
+    join submissions s on s.user_id = u.id
+    group by u.id
+    order by wpm desc
+    limit 5
+  SQL
+  top_five = database.execute(top_five_query).to_a
 
   haml :home, locals: {
     user_id: user_id,
@@ -90,6 +100,8 @@ get '/app/home' do
     avg_accuracy: stats[:avg_accuracy].to_i.round(1),
     total_typos: stats[:total_typos].to_i.round(1),
     total_subimssions: stats[:total_submissions].to_i,
+
+    top_five: top_five,
 
     lessons: lessons_vm,
   }
