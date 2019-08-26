@@ -28,6 +28,8 @@ get '/app/home' do
 
       {
         id: exercise.id,
+
+        title: exercise.title,
         
         complete: exercise_complete,
         accurate: exercise_accurate,
@@ -81,7 +83,7 @@ get '/app/home' do
   SQL
   stats = database.fetch(stats_query).first
 
-  top_five_query = <<~SQL
+  fastest_query = <<~SQL
     select u.username as username,
            max(s.wpm) as wpm
     from users u
@@ -90,7 +92,21 @@ get '/app/home' do
     order by wpm desc
     limit 5
   SQL
-  top_five = database.execute(top_five_query).to_a
+  fastest = database.execute(fastest_query).to_a
+
+  farthest_query = <<~SQL
+    select u.username as username,
+           max(l.position) as lesson,
+           e.position as exercise
+    from users u
+    join submissions s on s.user_id = u.id
+    join exercises e on s.exercise_id = e.id
+    join lessons l on e.lesson_id = l.id
+    group by u.id
+    order by lesson desc
+    limit 5
+  SQL
+  farthest = database.execute(farthest_query).to_a
 
   haml :home, locals: {
     user_id: user_id,
@@ -101,7 +117,8 @@ get '/app/home' do
     total_typos: stats[:total_typos].to_i.round(1),
     total_subimssions: stats[:total_submissions].to_i,
 
-    top_five: top_five,
+    fastest: fastest,
+    farthest: farthest,
 
     lessons: lessons_vm,
   }

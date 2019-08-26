@@ -20,7 +20,15 @@
   .card.mt-5.text-center
     .card-header.bg-light
       %h2.card-title Exercise #{exercise.position + 1} of #{lesson.exercises.size}
-    .card-body.pt-5#summary
+    .card-body.pt-3#summary
+      .row.mb-4
+        .col
+        .col
+          %sm #{wrong} typos
+        .col
+          %sm #{wpm} wpm
+        .col
+
       .row
         .col
           #complete.d-none
