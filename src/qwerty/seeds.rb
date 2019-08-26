@@ -52,9 +52,9 @@ module QWERTY
       ['ollol loolo ololl loloo ololo lolol llool oollo olo lol',    'From l to o',    1, 10, 40],
       ['old lords sold bold lots; lads of lore glob local glue',     'Review with o',  2, 15, 50],
       ['glow alone or redo ideas; sweat on the show for one halo',   'Midterm review', 2, 20, 50],
-    ],
+    ]],
 
-    'Middle and Ring Fingers 2' => [
+    ['Middle and Ring Fingers 2', [
       ['cddcd dccdc cdcdd dcdcc cdcdc dcdcd ddccd ccddc cdc dcd',   'From d to c',       1, 10, 40],
       ['act coy card aced dice can tacs duct ice ache calm duck',   'Review with c',     2, 15, 50],
       ['xssxs sxxsx xsxss sxsxx xsxsx sxsxs ssxxs xxssx xsx sxs',   'From s to x',       1, 10, 40],
@@ -258,6 +258,6 @@ QWERTY::LESSONS.each_with_index do |(title, exercises), i|
     exercise.min_wpm = min_wpm
     exercise.fast_wpm = fast_wpm
 
-    exercise.save
+    p exercise.save
   end
 end
