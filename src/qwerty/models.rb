@@ -27,7 +27,7 @@ class Lesson < Sequel::Model
   end
 end
 
-Lesson.dataset_module { order :position }
+Lesson.dataset_module { order :ordered, :position }
 
 class Exercise < Sequel::Model
   many_to_one :lesson
@@ -42,7 +42,7 @@ class Exercise < Sequel::Model
   end
 end
 
-Exercise.dataset_module { order :position }
+Exercise.dataset_module { order :ordered, :position }
 
 class Submission < Sequel::Model
   many_to_one :exercise

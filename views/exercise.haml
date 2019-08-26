@@ -4,48 +4,73 @@
 - content_for :foot do
   %script{type: 'text/javascript', src: '/js/exercise.js'}
 
+  :javascript
+    $(() => {
+      $('#exercise').hide().removeClass('d-none');
+      $('#tipsModal').modal('show');
+
+      setTimeout(() => {
+        $('#tipsModal').modal('hide');
+        $('#exercise').fadeIn(600);
+      }, 3600);
+    });
+    
 
 #container
-  %h5 Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
+  %h5.mb-0= lesson.title
+  %h2.mb-0= exercise.title
+  %p.mt-0 Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
   
-  #controls.row.text-center.mb-4.mt-4
-    .col
-    .col
-    #typos.col
-      %span.figure 0
-      typos
-    #wpm.col
-      %span.figure 0
-      wpm
-    .col
-      %a.btn.btn-link#restart{href: request.url}
-        %i.fas.fa-redo
-        restart
-    .col
-      %a.btn.btn-link#home{href: '/app/home'}
-        %i.fas.fa-home
-        home
-    .col
-    .col
+  #exercise.d-none
+    #controls.row.text-center.mb-4.mt-4
+      .col
+      .col
+      #typos.col
+        %span.figure 0
+        typos
+      #wpm.col
+        %span.figure 0
+        wpm
+      .col
+        %a.btn.btn-link#restart{href: request.url}
+          %i.fas.fa-redo
+          restart
+      .col
+        %a.btn.btn-link#home{href: '/app/home'}
+          %i.fas.fa-home
+          home
+      .col
+      .col
 
-  #write
-    - exercise.content.split('').each_with_index do |key, i|
-      - if key == ' '
-        %div.lessonKey{key: key, i: i}= key
-      - else
-        %span.lessonKey{key: key, i: i}= key
+    #write
+      - exercise.content.split('').each_with_index do |key, i|
+        - if key == ' '
+          %div.lessonKey{key: key, i: i}= key
+        - else
+          %span.lessonKey{key: key, i: i}= key
 
-  #keyboard.raised
-    - key_rows.each do |key_row|
-      - key_row.each.with_index(1) do |key, i|
-        %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
-          %span.on= key.on
-          %span.off= key.off
+    #keyboard.raised
+      - key_rows.each do |key_row|
+        - key_row.each.with_index(1) do |key, i|
+          %div.raised{class: (i == key_row.length ? 'key last' : 'key'), key: key.on, on: key.on, off: key.off, code: key.code, finger: key.finger}
+            %span.on= key.on
+            %span.off= key.off
 
 #capsModal.modal.fade{tabindex: '-1', role: :dialog}
   .modal-dialog{role: :dialog}
     .modal-content
       .modal-header
         %h1.modal-title CapsLock is on
-      .modal-header
+      .modal-body
         %p Push the CapsLock key to disable CapsLock before continuing your exercise.
+
+#tipsModal.modal.fade{style: 'margin-top: 200px', tabindex: '-1', role: :dialog}
+  .modal-dialog{role: :dialog}
+    .modal-content
+      .modal-header
+        %h3.modal-title= tip_title
+        .float-right
+          %a.close{href: '#', data: {dismiss: :modal}}
+            %i.fa.fa-times
+      .modal-body
+        %p= tip_body

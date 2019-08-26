@@ -7,7 +7,30 @@
             Hello, #{session[:username]}
             %a.btn.btn-default.float-right{href: '/app/sign_out'} Sign out
           
-          %hr
+          .card
+            .card-body
+              %h5.card-title Leaderboards
+
+              %ul.nav.nav-tabs#leaderboards.mb-4{role: :tablist}
+                %li.nav-item
+                  %a.nav-link.active#recordWpmLeaderboardTab{data: {toggle: :tab}, href: '#recordWpmLeaderboard', role: :tab, aria: {controls: 'recordWpmLeaderboard', selected: true}} Record WPM
+                %li.nav-item
+                  %a.nav-link#farthestLeaderboardTab{data: {toggle: :tab}, href: '#farthestLeaderboard', role: :tab, aria: {controls: 'farthestLeaderboard', selected: false}} Farthest
+
+              .tab-content#leaderboardsContent
+                .tab-pane.fade.show.active#recordWpmLeaderboard{role: :tabpanel, aria: {labelledby: '#recordWpmLeaderboardTab'}}
+                  - fastest.each.with_index(1) do |(username, wpm), i|
+                    %h5
+                      \##{i}:
+                      %span.badge.badge-success #{wpm} wpm
+                      = username
+
+                .tab-pane.fade#farthestLeaderboard{role: :tabpanel, aria: {labelledby: '#farthestLeaderboardTab'}}
+                  - farthest.each.with_index(1) do |(username, lesson, exercise), i|
+                    %h5
+                      \##{i}:
+                      %span.badge.badge-success lesson #{lesson + 1}, exercise #{exercise + 1}
+                      = username
 
           -# avg_wpm: #{avg_wpm}
           -# %br
@@ -19,26 +42,13 @@
           -# %br
           -# total_subimssions: #{total_subimssions}
 
-          - fastest.each.with_index(1) do |(username, wpm), i|
-            %h5
-              \##{i}:
-              %span.badge.badge-success #{wpm} wpm
-              = username
-          %hr
-          - farthest.each.with_index(1) do |(username, lesson, exercise), i|
-            %h5
-              \##{i}:
-              %span.badge.badge-success lesson #{lesson + 1}
-              = username
-          %hr
-
           .accordion#lessons
-            - lessons.each.with_index(1) do |lesson, i|
+            - lessons.each do |lesson|
               .card.mt-2.mb-2{id: lesson[:tag]}
                 .card-header.pt-4{class: "#{lesson[:bg_class]}"}
                   .row
                     .col-sm-6.col-md-5
-                      %h5 #{i}. #{lesson[:title]}
+                      %h5 #{lesson[:position] + 1}. #{lesson[:title]}
 
                     .col-sm-4.col-md-5
                       %i.fas.fa-check.ml-2.mr-2.h4{class: (lesson[:complete] ? :complete : :incomplete)}
@@ -47,14 +57,14 @@
 
                     .col-2.text-right
                       - unless lesson[:disabled]
-                        %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{lesson[:exercises_tag]}", 'aria-expanded': true, 'aria-controls': "Lesson #{i} exercises"}
+                        %i.fas.h4.fa-bars.pointer{'data-toggle': :collapse, 'data-target': "##{lesson[:exercises_tag]}", 'aria-expanded': true, 'aria-controls': "Lesson #{lesson[:position] + 1} exercises"}
 
                 .card-body.collapse{class: (:show if lesson[:next]), id: lesson[:exercises_tag], 'aria-lebelledby': lesson[:tag], 'data-parent': '#lessons'}
                   .row
-                    - lesson[:exercises].each.with_index(1) do |exercise, j|
+                    - lesson[:exercises].each do |exercise|
                       .col-sm-6.col-md-4.col-lg-3
                         %a.btn.btn-block.mb-4{href: "/app/lessons/#{lesson[:id]}/exercises/#{exercise[:id]}", class: "#{exercise[:btn_class]} #{:disabled if exercise[:disabled]}"}
-                          %h6 #{j}. #{exercise[:title]}
+                          %h6 #{exercise[:position] + 1}. #{exercise[:title]}
                           %i.fas.fa-check.ml-2.mr-2{class: (exercise[:complete] ? :complete : :incomplete)}
                           %i.fas.fa-bullseye.ml-2.mr-2{class: (exercise[:accurate] ? :complete : :incomplete)}
                           %i.fas.fa-bolt.ml-2.mr-2{class: (exercise[:fast] ? :complete : :incomplete)}

@@ -59,7 +59,6 @@ $(function() {
 
         console.log(event);
 
-
         if (event.keyCode == 16) {
             if (caps) {
                 $('.off').hide();
@@ -95,7 +94,9 @@ $(function() {
             }
 
             const key = el.attr('key');
-            if (event.key == x || x == ' ' && key == 'space') {
+            console.log(x);
+            console.log(key);
+            if (event.key == x || (x == ' ' && event.key == 'space') || (x == '&lt;' && event.key == '<') || (x == '&gt;' && event.key == '>') || (x == '&amp;' && event.key == '&')) {
                 k.addClass('done');
                 k.removeClass('missed');
 

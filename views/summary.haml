@@ -14,6 +14,22 @@
       $('#complete').fadeIn(900, () =>
         $('#accurate').fadeIn(900, () =>
           $('#fast').fadeIn(900)));
+
+      $(window).keydown(e => {
+        if (e.keyCode == 27) {
+          e.preventDefault();
+          setTimeout(function() {
+            window.location.href = $('#restart').prop('href');
+          });
+        }
+
+        if (e.keyCode == 13) {
+          e.preventDefault();
+          setTimeout(function() {
+            window.location.href = $('#next').prop('href');
+          });
+        }
+      });
     });
 
 .container
@@ -53,21 +69,21 @@
         - elsif wpm < fast_wpm
           Ok, you passed. But can you get to #{fast_wpm} words per minute?
         - else
-          You beat this level!
+          You did it!
 
     .card-footer.bg-light
       .row
         .col
-        #restart.col
-          %a.btn.btn-warning{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
+        .col
+          %a.btn.btn-warning#restart{href: "/app/lessons/#{lesson.id}/exercises/#{exercise.id}"}
             %i.fas.fa-redo
             restart
-        #home.col
-          %a.btn.btn-link{href: '/app/home'}
+        .col
+          %a.btn.btn-link#home{href: '/app/home'}
             %i.fas.fa-home
             home
-        #next.col
-          %a.btn{href: next_path, class: (complete ? 'btn-primary' : 'disabled btn-dark')}
+        .col
+          %a.btn#next{href: (next_path if complete), class: (complete ? 'btn-primary' : 'disabled btn-dark')}
             %i.fas.fa-arrow-right
             next
         .col

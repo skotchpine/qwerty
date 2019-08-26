@@ -12,44 +12,52 @@ end
 get '/app/home' do
   user_id = session[:user_id]
 
-  last_complete_lesson_index = -1
-  lessons_vm = Lesson.all.map.with_index do |lesson, i|
+  first_incomplete_lesson_found = false
+  lessons_vm = Lesson.ordered.map.with_index do |lesson, i|
     lesson_complete, lesson_accurate, lesson_fast =
       lesson.complete(user_id), lesson.accurate(user_id), lesson.fast(user_id)
 
-    last_complete_lesson_index = i if lesson_complete
+    first_incomplete_lesson =
+      if lesson_complete || first_incomplete_lesson_found
+        false
+      else
+        first_incomplete_lesson_found = true
+        true
+      end
 
-    last_complete_exercise_index = -1
-    exercises_vm = lesson.exercises.map.with_index do |exercise, j|
+    first_incomplete_exercise_found = false
+    exercises_vm = lesson.exercises_dataset.ordered.map.with_index do |exercise, j|
       exercise_complete, exercise_accurate, exercise_fast =
         exercise.complete(user_id), exercise.accurate(user_id), exercise.fast(user_id)
 
-      last_complete_exercise_index = j if exercise_complete
+      
+      first_incomplete_exercise =
+        if exercise_complete || first_incomplete_exercise_found
+          false
+        else
+          first_incomplete_exercise_found = true
+          true
+        end
 
       {
         id: exercise.id,
-
         title: exercise.title,
+        position: exercise.position,
         
         complete: exercise_complete,
         accurate: exercise_accurate,
         fast: exercise_fast,
 
-        next: false,
-        btn_class: exercise_complete ? 'btn-light' : 'btn-disabled',
-        disabled: !exercise_complete,
+        next: first_incomplete_exercise,
+        btn_class: (!first_incomplete_exercise && first_incomplete_exercise_found)  ? 'incomplete' : 'btn-light',
+        disabled: !first_incomplete_exercise && first_incomplete_exercise_found,
       }
-    end
-
-    if last_complete_exercise_index < exercises_vm.size - 1
-      exercises_vm[last_complete_exercise_index + 1][:next] = true
-      exercises_vm[last_complete_exercise_index + 1][:btn_class] = 'btn-light'
-      exercises_vm[last_complete_exercise_index + 1][:disabled] = false
     end
 
     {
       id: lesson.id,
       title: lesson.title,
+      position: lesson.position,
 
       tag: "lesson-#{lesson.id}",
       exercises_tag: "lesson-#{lesson.id}-exercises",
@@ -58,18 +66,12 @@ get '/app/home' do
       accurate: lesson_accurate,
       fast: lesson_fast,
 
-      next: false,
-      bg_class: lesson_complete ? 'bg-light' : 'incomplete',
-      disabled: !lesson_complete,
+      next: first_incomplete_lesson,
+      bg_class: (!first_incomplete_lesson && first_incomplete_lesson_found) ? 'incomplete' : 'bg-light',
+      disabled: !first_incomplete_lesson && first_incomplete_lesson_found,
 
       exercises: exercises_vm,
     }
-  end
-
-  if last_complete_lesson_index < lessons_vm.size - 1
-    lessons_vm[last_complete_lesson_index + 1][:next] = true
-    lessons_vm[last_complete_lesson_index + 1][:bg_class] = 'bg-light'
-    lessons_vm[last_complete_lesson_index + 1][:disabled] = false
   end
 
   stats_query = <<~SQL
@@ -97,7 +99,7 @@ get '/app/home' do
   farthest_query = <<~SQL
     select u.username as username,
            max(l.position) as lesson,
-           e.position as exercise
+           max(e.position) as exercise
     from users u
     join submissions s on s.user_id = u.id
     join exercises e on s.exercise_id = e.id
@@ -127,7 +129,14 @@ end
 get '/app/lessons/:lesson_id/exercises/:exercise_id' do
   lesson = Lesson.where(id: params[:lesson_id].to_i).first
   exercise = Exercise.where(id: params[:exercise_id].to_i).first
-  haml :exercise, locals: { key_rows: Keyboard.rows, exercise: exercise, lesson: lesson }
+  tip = TIPS.sample
+  haml :exercise, locals: {
+    key_rows: Keyboard.rows,
+    exercise: exercise,
+    lesson: lesson,
+    tip_title: tip[0],
+    tip_body: tip[1],
+  }
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do

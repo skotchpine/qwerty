@@ -22,7 +22,7 @@ post '/auth/sign_up' do
   users = User.where(username: params[:username])
   
   if users.any?
-    redirect '/auth/sign_in?error=You already have an account. Sign in here.', 301
+    redirect '/auth/sign_up?error=That username already exists', 301
   else
 
     user = User.new \
@@ -51,10 +51,10 @@ post '/auth/sign_in' do
 
       redirect '/app/home', 301
     else
-      redirect "/auth/sign_in?error=Access denied.", 301
+      redirect "/auth/sign_in?error=Incorrect password.", 301
     end
   else
-    redirect "/auth/sign_up?error=That account doesn't exist. Sign up here.", 301
+    redirect "/auth/sign_in?error=That username doesn't exist.", 301
   end
 end
   
