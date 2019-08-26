@@ -51,8 +51,8 @@ class Submission < Sequel::Model
   def self.from_results(user_id, exercise_id, right, wrong, accuracy, wpm)
     exercise = Exercise.where(id: exercise_id).first
     complete = wrong <= exercise.max_typos && wpm >= exercise.min_wpm
-    accurate = wrong.zero?
-    fast = wpm >= exercise.fast_wpm
+    accurate = complete && wrong.zero?
+    fast = complete && wpm >= exercise.fast_wpm
 
     create \
       user_id: user_id,

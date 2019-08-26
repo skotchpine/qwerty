@@ -13,3 +13,7 @@ set :session_store, Rack::Session::Pool
 use Rack::Session::Pool, :expire_after => 2592000
 use Rack::Protection::RemoteToken
 use Rack::Protection::SessionHijacking
+
+before '*' do
+  headers 'Cache-Control' => 'no-store'
+end

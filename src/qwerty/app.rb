@@ -102,26 +102,6 @@ get '/app/lessons/:lesson_id/exercises/:exercise_id' do
 end
 
 post '/app/lessons/:lesson_id/exercises/:exercise_id' do
-  complete = params[:wrong].to_i < 4
-  accurate = complete && params[:accuracy] == '100%'
-  fast = complete && params[:wpm].to_i > 30
-
-  submission =
-    Submission.create \
-      user_id: session[:user_id].to_i,
-      exercise_id: params[:exercise_id].to_i,
-
-      right: params[:right],
-      wrong: params[:wrong],
-      accuracy: params[:accuracy],
-      wpm: params[:wpm],
-
-      complete: complete,
-      accurate: accurate,
-      fast: fast,
-
-      created_at: DateTime.now
-
   submission =
     Submission.from_results \
       session[:user_id].to_i,
@@ -167,6 +147,10 @@ get '/app/submissions/:submission_id' do
     complete: submission.complete,
     accurate: submission.accurate,
     fast: submission.fast,
+
+    max_typos: exercise.max_typos,
+    min_wpm: exercise.min_wpm,
+    fast_wpm: exercise.fast_wpm,
 
     exercise: exercise,
     lesson: lesson,

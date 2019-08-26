@@ -25,15 +25,28 @@
         .col
           #complete.d-none
             %i.d-block.display-3.fas.fa-check{class: (complete ? :complete : :incomplete)}
-            %h2.mt-4.grey #{wrong} typos
         .col
           #accurate.d-none
             %i.d-block.display-3.fas.fa-bullseye{class: (accurate ? :complete : :incomplete)}
-            %h2.mt-4.grey #{accuracy}% accuracy
         .col
           #fast.d-none
             %i.d-block.display-3.fas.fa-bolt{class: (fast ? :complete : :incomplete)}
-            %h2.mt-4.grey #{wpm} wpm
+
+      %h4.pb-0.mt-5
+        - if wrong > max_typos
+          - if max_typos.zero?
+            You made a mistake! You can't have any typos on this exercise.
+          - else
+            Too many typos! You need fewer than #{max_typos + 1} typos.
+        - elsif wpm < min_wpm
+          You need to type at least #{min_wpm} words per minute.
+        - elsif wrong > 0
+          Ok, you passed. But can you finish with no typos?
+        - elsif wpm < fast_wpm
+          Ok, you passed. But can you get to #{fast_wpm} words per minute?
+        - else
+          You beat this level!
+
     .card-footer.bg-light
       .row
         .col
