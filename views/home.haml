@@ -7,31 +7,33 @@
             Hello, #{session[:username]}
             %a.btn.btn-default.float-right{href: '/app/sign_out'} Sign out
           
-          .card
-            .card-body
-              %h5.card-title Leaderboards
+          %ul.nav.nav-tabs#s.mb-4{role: :tablist}
+            %li.nav-item
+              %a.nav-link.active#recordWpmTab{data: {toggle: :tab}, href: '#recordWpm', role: :tab, aria: {controls: 'recordWpm', selected: true}} Record WPM
+            %li.nav-item
+              %a.nav-link#farthestTab{data: {toggle: :tab}, href: '#farthest', role: :tab, aria: {controls: 'farthest', selected: false}} Farthest
+            %li.nav-item
+              %a.nav-link#Tip{data: {toggle: :tab}, href: '#tip', role: :tab, aria: {controls: 'tip', selected: false}} Tip
 
-              %ul.nav.nav-tabs#leaderboards.mb-4{role: :tablist}
-                %li.nav-item
-                  %a.nav-link.active#recordWpmLeaderboardTab{data: {toggle: :tab}, href: '#recordWpmLeaderboard', role: :tab, aria: {controls: 'recordWpmLeaderboard', selected: true}} Record WPM
-                %li.nav-item
-                  %a.nav-link#farthestLeaderboardTab{data: {toggle: :tab}, href: '#farthestLeaderboard', role: :tab, aria: {controls: 'farthestLeaderboard', selected: false}} Farthest
+          .tab-content#sContent
+            .tab-pane.fade.show.active#recordWpm{role: :tabpanel, aria: {labelledby: '#recordWpmTab'}}
+              - fastest.each.with_index(1) do |(username, wpm), i|
+                %h5
+                  \##{i}:
+                  %span.badge.badge-success #{wpm} wpm
+                  = username
 
-              .tab-content#leaderboardsContent
-                .tab-pane.fade.show.active#recordWpmLeaderboard{role: :tabpanel, aria: {labelledby: '#recordWpmLeaderboardTab'}}
-                  - fastest.each.with_index(1) do |(username, wpm), i|
-                    %h5
-                      \##{i}:
-                      %span.badge.badge-success #{wpm} wpm
-                      = username
+            .tab-pane.fade#farthest{role: :tabpanel, aria: {labelledby: '#farthestTab'}}
+              - farthest.each.with_index(1) do |(username, lesson, exercise), i|
+                %h5
+                  \##{i}:
+                  %span.badge.badge-success lesson #{lesson + 1}, exercise #{exercise + 1}
+                  = username
 
-                .tab-pane.fade#farthestLeaderboard{role: :tabpanel, aria: {labelledby: '#farthestLeaderboardTab'}}
-                  - farthest.each.with_index(1) do |(username, lesson, exercise), i|
-                    %h5
-                      \##{i}:
-                      %span.badge.badge-success lesson #{lesson + 1}, exercise #{exercise + 1}
-                      = username
-
+            .tab-pane.fade#tip{role: :tabpanel, aria: {labelledby: '#tipTab'}}
+              %h5= tip[0]
+              %p= tip[1]
+              
           -# avg_wpm: #{avg_wpm}
           -# %br
           -# avg_typos: #{avg_typos}
@@ -41,6 +43,8 @@
           -# total_typos: #{total_typos}
           -# %br
           -# total_subimssions: #{total_subimssions}
+
+          %hr
 
           .accordion#lessons
             - lessons.each do |lesson|
