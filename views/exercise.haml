@@ -4,24 +4,12 @@
 - content_for :foot do
   %script{type: 'text/javascript', src: '/js/exercise.js'}
 
-  :javascript
-    $(() => {
-      $('#exercise').hide().removeClass('d-none');
-      $('#tipsModal').modal('show');
-
-      setTimeout(() => {
-        $('#tipsModal').modal('hide');
-        $('#exercise').fadeIn(600);
-      }, 3600);
-    });
-    
-
 #container
   %h5.mb-0= lesson.title
   %h2.mb-0= exercise.title
   %p.mt-0 Exercise #{exercise.position + 1} of lesson #{lesson.position + 1}
   
-  #exercise.d-none
+  #exercise
     #controls.row.text-center.mb-4.mt-4
       .col
       .col
@@ -63,14 +51,3 @@
         %h1.modal-title CapsLock is on
       .modal-body
         %p Push the CapsLock key to disable CapsLock before continuing your exercise.
-
-#tipsModal.modal.fade{style: 'margin-top: 200px', tabindex: '-1', role: :dialog}
-  .modal-dialog{role: :dialog}
-    .modal-content
-      .modal-header
-        %h3.modal-title= tip_title
-        .float-right
-          %a.close{href: '#', data: {dismiss: :modal}}
-            %i.fa.fa-times
-      .modal-body
-        %p= tip_body

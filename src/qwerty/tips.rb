@@ -11,7 +11,7 @@ TIPS = [
   ['Know your rank', 'Find the rankings section at the top of the homepage, you may be the fastest typist you know!'],
   ['Rest between practice', 'You do not need to race on to the next exercise today. Come back tomorrow for a fresh start.'],
   ['Alternating shift keys', 'Use whichever shift key is opposite the key you are augmenting.'],
-  ['Unique exercises', 'Every exercise has different goals.'],
+  ['Exercises are unique', 'Every exercise has different goals.'],
   ['Achievements', 'Come back to lessons later when you are more accurate or faster.'],
   ['Posture', 'To type faster, sit with your back straight and feet on the floor.'],
   ['Relax', 'The words per minute timer does not start until you start typing.'],

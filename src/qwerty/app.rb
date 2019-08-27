@@ -121,6 +121,7 @@ get '/app/home' do
 
     fastest: fastest,
     farthest: farthest,
+    tip: TIPS.sample,
 
     lessons: lessons_vm,
   }
@@ -129,13 +130,11 @@ end
 get '/app/lessons/:lesson_id/exercises/:exercise_id' do
   lesson = Lesson.where(id: params[:lesson_id].to_i).first
   exercise = Exercise.where(id: params[:exercise_id].to_i).first
-  tip = TIPS.sample
+
   haml :exercise, locals: {
     key_rows: Keyboard.rows,
     exercise: exercise,
     lesson: lesson,
-    tip_title: tip[0],
-    tip_body: tip[1],
   }
 end
 
