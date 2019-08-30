@@ -221,21 +221,23 @@ module QWERTY
       ['Your car is out of date as soon as it is paid for.',                   'Bonus Practice 19',     2, 15, 35]]]]
   end
 
-QWERTY::LESSONS.each_with_index do |(title, exercises), i|
-  lesson = Lesson.where(title: title).first || Lesson.create(title: title, position: i)
+if ENV['QWERTY_RUN_MIGRATIONS'] == 'true'
+  QWERTY::LESSONS.each_with_index do |(title, exercises), i|
+    lesson = Lesson.where(title: title).first || Lesson.create(title: title, position: i)
 
-  lesson.position = i
-  lesson.save
+    lesson.position = i
+    lesson.save
 
-  exercises.each_with_index do |(content, title, max_typos, min_wpm, fast_wpm), j|
-    exercise = Exercise.where(content: content, lesson_id: lesson.id).first || lesson.add_exercise(content: content, position: j)
+    exercises.each_with_index do |(content, title, max_typos, min_wpm, fast_wpm), j|
+      exercise = Exercise.where(content: content, lesson_id: lesson.id).first || lesson.add_exercise(content: content, position: j)
 
-    exercise.position = j
-    exercise.title = title
-    exercise.max_typos = max_typos
-    exercise.min_wpm = min_wpm
-    exercise.fast_wpm = fast_wpm
+      exercise.position = j
+      exercise.title = title
+      exercise.max_typos = max_typos
+      exercise.min_wpm = min_wpm
+      exercise.fast_wpm = fast_wpm
 
-    p exercise.save
+      p exercise.save
+    end
   end
 end
