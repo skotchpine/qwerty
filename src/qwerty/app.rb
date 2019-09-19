@@ -157,7 +157,7 @@ get '/app/submissions/:submission_id' do
   lesson = exercise.lesson
 
   next_path =
-    if lesson.exercises.last == exercise
+    if Exercise.ordered.where(lesson_id: lesson.id).last == exercise
       next_lesson = Lesson.where(position: lesson.position + 1).first
 
       redirect '/app/home', 301 unless next_lesson
