@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  # TODO: Get rid of the info controller and it's routes
+  root to: 'info#anyone'
+  get :anyone, to: 'info#anyone'
+  get :users, to: 'info#users'
 end
