@@ -10,14 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_154535) do
+ActiveRecord::Schema.define(version: 2020_10_13_161535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "exercises", force: :cascade do |t|
+    t.bigint "lesson_id", null: false
+    t.integer "position", null: false
+    t.string "content", null: false
+    t.string "title", null: false
+    t.integer "max_typos", null: false
+    t.integer "min_wpm", null: false
+    t.integer "fast_wpm", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lesson_id"], name: "index_exercises_on_lesson_id"
+  end
+
   create_table "lessons", force: :cascade do |t|
-    t.integer "position"
-    t.string "title"
+    t.integer "position", null: false
+    t.string "title", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -36,4 +49,5 @@ ActiveRecord::Schema.define(version: 2020_10_13_154535) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "exercises", "lessons"
 end
