@@ -1,14 +1,14 @@
 #
 # USERS
 #
-if not database.table_exists?(:users)
+unless database.table_exists?(:users)
   migration 'create users' do
     database.create_table :users do
       primary_key :id
 
       String :username
       String :password_digest
-      
+
       timestamp :created_at
       timestamp :updated_at
     end
@@ -18,7 +18,7 @@ end
 #
 # LESSONS
 #
-if not database.table_exists?(:lessons)
+unless database.table_exists?(:lessons)
   migration 'create lessons' do
     database.create_table :lessons do
       primary_key :id
@@ -32,7 +32,7 @@ end
 #
 # EXERCISES
 #
-if not database.table_exists?(:exercises)
+unless database.table_exists?(:exercises)
   migration 'create exercises' do
     database.create_table :exercises do
       primary_key :id
@@ -45,7 +45,7 @@ if not database.table_exists?(:exercises)
 end
 
 migration 'add criteria to exercises' do
-  if !database[:exercises].columns.include?(:title)
+  unless database[:exercises].columns.include?(:title)
     database.add_column :exercises, :title, String
     database.add_column :exercises, :max_typos, Integer
     database.add_column :exercises, :min_wpm, Integer
@@ -56,7 +56,7 @@ end
 #
 # SUBMISSIONS
 #
-if not database.table_exists?(:submissions)
+unless database.table_exists?(:submissions)
   migration 'create submissions' do
     database.create_table :submissions do
       primary_key :id
@@ -71,7 +71,7 @@ if not database.table_exists?(:submissions)
       Boolean :complete, null: false
       Boolean :accurate, null: false
       Boolean :fast, null: false
-      
+
       timestamp :created_at
     end
   end

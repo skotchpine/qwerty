@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_161535) do
+ActiveRecord::Schema.define(version: 2020_10_13_164211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,22 @@ ActiveRecord::Schema.define(version: 2020_10_13_161535) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "submissions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "exercise_id", null: false
+    t.integer "right", null: false
+    t.integer "wrong", null: false
+    t.integer "accuracy", null: false
+    t.integer "wpm", null: false
+    t.boolean "complete", null: false
+    t.boolean "accurate", null: false
+    t.boolean "fast", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["exercise_id"], name: "index_submissions_on_exercise_id"
+    t.index ["user_id"], name: "index_submissions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -50,4 +66,6 @@ ActiveRecord::Schema.define(version: 2020_10_13_161535) do
   end
 
   add_foreign_key "exercises", "lessons"
+  add_foreign_key "submissions", "exercises"
+  add_foreign_key "submissions", "users"
 end
