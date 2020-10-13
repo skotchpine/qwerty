@@ -1,7 +1,7 @@
 class InfoController < ApplicationController
-  def anyone
-  end
+  before_action :authenticate_user!, only: %i[users]
 
-  def users
-  end
+  def anyone; end
+
+  def users; end
 end
