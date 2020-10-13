@@ -5,6 +5,11 @@ RSpec.describe Lesson, type: :model do
     Lesson.new(title: 'test title', position: 0)
   end
 
+  it 'has many exercises' do
+    t = Lesson.reflect_on_association(:exercises)
+    expect(t.macro).to eq(:has_many)
+  end
+
   it 'is valid with valid attributes' do
     expect(new_lesson).to be_valid
   end

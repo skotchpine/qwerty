@@ -16,6 +16,11 @@ RSpec.describe Exercise, type: :model do
       max_typos: 0
   end
 
+  it 'belongs to a lesson' do
+    t = Exercise.reflect_on_association(:lesson)
+    expect(t.macro).to eq(:belongs_to)
+  end
+
   it 'is valid with valid attributes' do
     expect(new_exercise).to be_valid
   end
