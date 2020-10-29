@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html>
-<div =container>
-
-  <head>
+ 
+   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qwerty</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'application',media: 'all', 'data-turbolinks-track': 'reload' %>
+    
+    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+   </head>
 
-  <body>
-    <%= yield %>
-  </body>
-  </div>
+   <body>
+    <div class="container">
+     <div class="card">
+      <div class="card-body">
+       <div class="card-title">
+        <%= yield %>
+       </div>
+      </div>
+     </div>
+    </div>
+   
+   </body>
+  
 </html>

@@ -1,0 +1,23 @@
+ <h2 class="card-title">Welcome,<%= current_user.email %><%= button_to "logout", destroy_user_session_path,:method => :delete %></h2>
+   <ul class="nav nav-tabs" role= 'tablist'>
+    <li class="nav-item">
+     <a class="nav-link active" role="tab"  data-toggle="tab" id="recordWpmTab" href="#" aria-controls="#" >Record WPM</a>
+    </li>
+    <li class="nav-item">
+     <a class="nav-link" role="tab" data-toggle="tab" id="farthestTab" href="#" aria-controls="#">farthest</a>
+    </li>
+    <li class="nav-item">
+     <a class="nav-link" role="tab" data-toggle="tab" id="Tip" href="#" aria-controlls="#">tip</a>
+    </li>
+    <%= @fastest %>
+   </ul>
+   <div class="tab-content" id="sContent" role="tabpanel">
+    <div class="tab-pane show active" id="recordWPM" role="tabpanel" aria-labelledby='#recordWpmTab'>
+    </div>
+   </div>
+  
+
+
+   
+ 
+

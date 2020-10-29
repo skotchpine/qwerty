@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_13_164211) do
+ActiveRecord::Schema.define(version: 2020_10_27_141200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2020_10_13_164211) do
     t.integer "fast_wpm", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "complete",null: false
     t.index ["lesson_id"], name: "index_exercises_on_lesson_id"
   end
 
