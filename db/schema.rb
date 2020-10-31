@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_10_27_141200) do
     t.integer "fast_wpm", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "complete",null: false
+    t.boolean "complete"
     t.index ["lesson_id"], name: "index_exercises_on_lesson_id"
   end
 
